@@ -1,0 +1,156 @@
+[
+    {
+        "name": "Spatter",
+        "description": "Spatter is a memory system benchmarking tool that allows for multi-platform (CPU, GPU) testing of sparse memory accesses commonly found in HPC and AI applications. Recent developments by Los Alamos National Lab and Georgia Tech have enabled further tools to analyze applications and extract patterns to be used as inputs to Spatter.",
+        "types": ["hardware", "research"],
+        "technologies": ["HPC", "CPU/GPU Benchmarking"],
+        "license": "BSD-3-Clause",
+        "yearStarted": 2018,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/hpcgarage/spatter"
+    },
+    {
+        "name": "MFC",
+        "description": "MFC is a computational fluid dynamics solver used to solve problems in health, energy, and defense. It incorporates several physical phenomenologies. Focus is paid to performance, with kernels optimized to GPU devices and algorithms tailored so the solver scales to 100% of GPU-based exascale machines like OLCF Frontier.",
+        "types": ["hardware", "research"],
+        "technologies": ["HPC", "GPU Optimization", "CFD"],
+        "license": "MIT",
+        "yearStarted": 2019,
+        "status": "Active",
+        "logo": "misc/logos/MFC-logo.webp",
+        "url": "https://mflowcode.github.io"
+    },
+    {
+        "name": "QCManyBody",
+        "description": "Intermolecular many-body expansion with QCArchive integration",
+        "types": ["research", "academic"],
+        "technologies": ["Quantum Chemistry", "Python"],
+        "license": "BSD-3-Clause",
+        "yearStarted": 2024,
+        "status": "Active",
+        "logo": "misc/logos/QCMB-logo.webp",
+        "url": "https://github.com/MolSSI/QCManyBody"
+    },
+    {
+        "name": "Vortex",
+        "description": "Vortex is an open-source hardware and software project to support GPGPU based on RISC-V ISA extensions. Currently Vortex supports OpenCL and it runs on FPGA. The vortex platform is highly customizable and scalable with a complete open-source compiler, driver and runtime software stack to enable research in GPU architectures.",
+        "types": ["hardware", "research"],
+        "technologies": ["RISC-V", "OpenCL", "FPGA"],
+        "license": "Apache-2.0",
+        "yearStarted": 2020,
+        "status": "Active",
+        "logo": null,
+        "url": "https://vortex.cc.gatech.edu/"
+    },
+    {
+        "name": "CuPBoP",
+        "description": "CuPBoP (Cuda for Parallelized and Broad-range Processors) is a framework which support executing unmodified CUDA source code on non-NVIDIA devices. Currently, CuPBoP support serveral CPU backends, including x86, AArch64, and RISC-V.",
+        "types": ["hardware", "research"],
+        "technologies": ["CUDA", "RISC-V", "x86"],
+        "license": "Apache-2.0",
+        "yearStarted": 2022,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/cupbop/CuPBoP"
+    },
+    {
+        "name": "Apache Airavata",
+        "description": "Apache Airavata is an open-source software framework that simplifies complex computational experiments by providing robust solutions across three core areas: Data Management, Security, and Execution Management. It empowers scientists to leverage distributed computing resources seamlessly while enabling developers to build customizable science gateways.",
+        "types": ["ai", "hardware", "research"],
+        "technologies": ["AI/ML", "HPC", "Distributed Computing"],
+        "license": "Apache-2.0",
+        "yearStarted": 2014,
+        "status": "Active",
+        "logo": "misc/logos/airavata-logo.webp",
+        "url": "https://airavata.apache.org/"
+    },
+    {
+        "name": "SLOSH-ML",
+        "description": "SLOSH-ML is a Matlab graphical user interface designed to analyze rocket propellant sloshing in space launch vehicles",
+        "types": ["research", "academic"],
+        "technologies": ["MATLAB", "Aerospace"],
+        "license": "GPL-3.0",
+        "yearStarted": 2024,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/LGST-LAB/slosh_ml"
+    },
+    {
+        "name": "HLSFactory",
+        "description": "HLSFactory is a framework for High-Level Synthesis (HLS) design datasets. It provides both the facilities to collect and build custom HLS datasets using various frontends, supported HLS tools, and data aggregation as well as provides built-in design dataset sources for users who want to run their own experiments out of the box.",
+        "types": ["ai", "hardware", "research"],
+        "technologies": ["HLS", "FPGA", "Design Space Exploration"],
+        "license": "AGPL-3.0",
+        "yearStarted": 2024,
+        "status": "Active",
+        "logo": "misc/logos/hlsfactory-logo.webp",
+        "url": "https://sharc-lab.github.io/HLSFactory/docs/"
+    },
+    {
+        "name": "LightningSim",
+        "description": "LightningSim is an ultra-fast, accurate, trace-based simulator for High-Level Synthesis (HLS) designs. It is 99.9% accurate compared with C/RTL co-simulation while is up to two orders of magnitude faster. It also features an incremental FIFO depths optimization, which is up to 500x faster than using HLS default exploration.",
+        "types": ["ai", "hardware", "research"],
+        "technologies": ["HLS", "Simulation", "FPGA"],
+        "license": "AGPL-3.0",
+        "yearStarted": 2023,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/sharc-lab/LightningSim"
+    },
+    {
+        "name": "Fijjiontrack",
+        "description": "Fission-track dating is a well established form of radiometric dating, a fundamental technique used to measure geological time. Most radiometric dating approaches rely on expensive laboratory analyses inaccessible to a majority of Earth scientists around the globe, but fission-track analysis can be performed by analysis of digital micrographs, a much cheaper and more accessible option.",
+        "types": ["ai", "research", "academic"],
+        "technologies": ["Machine Learning", "Computer Vision", "Geology"],
+        "license": "Public Domain",
+        "yearStarted": 2020,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/gatechtonics/fijjiontrack"
+    },
+    {
+        "name": "Qwerty",
+        "description": "Qwerty is a basis-oriented quantum programming language designed to achieve a higher level of abstraction, particularly for newcomers. The Qwerty compiler is an open-source project.",
+        "types": ["research", "academic"],
+        "technologies": ["Quantum Computing", "Compiler Design"],
+        "license": "MIT",
+        "yearStarted": 2024,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/gt-tinker/qwerty"
+    },
+    {
+        "name": "GTSAM",
+        "description": "GTSAM (Georgia Tech Smoothing and Mapping Library) is a C++ library that implements smoothing and mapping (SAM) in robotics and vision, using Factor Graphs and Bayes Networks as the underlying computing paradigm rather than sparse matrices.",
+        "types": ["ai", "research"],
+        "technologies": ["Robotics", "Computer Vision", "C++"],
+        "license": "BSD-3-Clause",
+        "yearStarted": 2017,
+        "status": "Active",
+        "logo": null,
+        "url": "https://gtsam.org/"
+    },
+    {
+        "name": "AI Fundamentals",
+        "description": "A concise textbook offering a mathematical and programming-based approach to understanding artificial intelligence.",
+        "types": ["ai", "academic"],
+        "technologies": ["AI Education", "Textbook"],
+        "license": ["GPL-3.0", "GFDL-1.3"],
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": "misc/logos/AF-logo.webp",
+        "url": "https://github.com/Fedele-AI/AI_Fundamentals"
+    },
+    {
+        "name": "ML Visualizer",
+        "description": "A self-contained, libre website designed to demonstrate and explain modern machine learning techniques, technologies, and methods.",
+        "types": ["ai", "academic", "web"],
+        "technologies": ["Machine Learning", "Web"],
+        "license": "GPL-3.0",
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": null,
+        "url": "https://mlvisualizer.org"
+    }
+]

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreLinker - Get Coding Today!</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://librelinker.org/">
+    <meta property="og:title" content="LibreLinker - Get Coding Today!">
+    <meta property="og:description" content="A curated collection of innovative open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow.">
+    <meta property="og:image" content="misc/img/GTLTC_LOGO_SOLO.webp">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://librelinker.org/">
+    <meta property="twitter:title" content="LibreLinker - Get Coding Today!">
+    <meta property="twitter:description" content="A curated collection of innovative open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow.">
+    <meta property="twitter:image" content="misc/img/GTLTC_LOGO_SOLO.webp">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="description" content="A curated collection of innovative open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow.">
+    <meta name="keywords" content="open source, Georgia Tech, AI, research, hardware, projects, portfolio">
+    <meta name="author" content="LibreTech Collective">
+    
+    <!-- 100% privacy-first analytics -->
+    <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+    
+    <!-- EmailJS for client-side email sending -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <!-- hCaptcha for bot prevention -->
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-gold': '#B3A369',
+                        'brand-navy': '#003057',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 h-screen flex flex-col transition-colors duration-200">
+    <!-- @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
+    
+    LibreLinker
+    Copyright (C) 2025
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    
+    @license-end -->
+
+    <script id="theme-script">
+    // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
+    
+    // Initialize theme before page renders to prevent flash
+    (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    })();
+    
+    // @license-end
+    </script>
+
+    <script id="app-script">
+    // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
+    
+    class LibreLinker {
+        constructor() {
+            this.projects = [];
+            this.sortColumn = 'name';
+            this.sortDirection = 'asc';
+            this.hasUserSorted = false;
+            this.activeFilters = new Set();
+            this.init();
+        }
+
+        async init() {
+            await this.loadProjects();
+            this.setupSortHandlers();
+            this.setupFilterHandlers();
+            this.render();
+        }
+
+        async loadProjects() {
+            try {
+                const response = await fetch('projects.json');
+                this.projects = await response.json();
+                // Randomize project order
+                this.projects.sort(() => Math.random() - 0.5);
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                this.projects = [];
+            }
+        }
+
+        setupSortHandlers() {
+            const headers = document.querySelectorAll('th[data-sort]');
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const column = header.getAttribute('data-sort');
+                    if (this.sortColumn === column) {
+                        if (this.sortDirection === 'asc') {
+                            this.sortDirection = 'desc';
+                            this.hasUserSorted = true;
+                        } else if (this.sortDirection === 'desc') {
+                            // Third click - reset to default (randomized) state
+                            this.hasUserSorted = false;
+                            this.sortColumn = null;
+                            this.sortDirection = 'asc';
+                        }
+                    } else {
+                        this.sortColumn = column;
+                        this.sortDirection = 'asc';
+                        this.hasUserSorted = true;
+                    }
+                    this.updateSortIndicators();
+                    this.render();
+                });
+            });
+        }
+
+        setupFilterHandlers() {
+            const filterButtons = document.querySelectorAll('[data-filter-type]');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const type = button.getAttribute('data-filter-type');
+                    if (this.activeFilters.has(type)) {
+                        this.activeFilters.delete(type);
+                        button.classList.remove('bg-brand-gold', 'text-white');
+                        button.classList.add('bg-gray-100', 'text-gray-700');
+                    } else {
+                        this.activeFilters.add(type);
+                        button.classList.remove('bg-gray-100', 'text-gray-700');
+                        button.classList.add('bg-brand-gold', 'text-white');
+                    }
+                    this.render();
+                });
+            });
+        }
+
+        getFilteredProjects() {
+            if (this.activeFilters.size === 0) {
+                return this.projects;
+            }
+            return this.projects.filter(project => 
+                project.types.some(type => this.activeFilters.has(type))
+            );
+        }
+
+        updateSortIndicators() {
+            const headers = document.querySelectorAll('th[data-sort]');
+            headers.forEach(header => {
+                const icon = header.querySelector('.sort-icon');
+                if (header.getAttribute('data-sort') === this.sortColumn) {
+                    icon.textContent = this.sortDirection === 'asc' ? '↑' : '↓';
+                    icon.classList.remove('opacity-30');
+                } else {
+                    icon.textContent = '↕';
+                    icon.classList.add('opacity-30');
+                }
+            });
+        }
+
+        sortProjects() {
+            const filteredProjects = this.getFilteredProjects();
+            
+            // If no sorting has been done yet (initial state), return projects as-is (randomized)
+            if (!this.hasUserSorted) {
+                return filteredProjects;
+            }
+
+            const sorted = [...filteredProjects].sort((a, b) => {
+                let aVal = a[this.sortColumn];
+                let bVal = b[this.sortColumn];
+
+                // Handle license arrays - use first license for sorting
+                if (this.sortColumn === 'license') {
+                    aVal = Array.isArray(aVal) ? aVal[0] : aVal;
+                    bVal = Array.isArray(bVal) ? bVal[0] : bVal;
+                }
+
+                // Handle different data types
+                if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                    
+                    // Use localeCompare for proper alphabetical sorting
+                    if (this.sortDirection === 'asc') {
+                        return aVal.localeCompare(bVal);
+                    } else {
+                        return bVal.localeCompare(aVal);
+                    }
+                }
+
+                // For numbers and other types
+                if (this.sortDirection === 'asc') {
+                    return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
+                } else {
+                    return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+                }
+            });
+            return sorted;
+        }
+
+        getProjectIcon(type) {
+            const icons = {
+                'ai': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>`,
+                'academic': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                </svg>`,
+                'research': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                </svg>`,
+                'hardware': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                </svg>`,
+                'web': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                </svg>`,
+                'mobile': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>`
+            };
+            return icons[type] || icons['web'];
+        }
+
+        getTypeDescription(type) {
+            const descriptions = {
+                'ai': 'Artificial Intelligence & Machine Learning project',
+                'academic': 'Academic or educational project',
+                'research': 'Research & development project',
+                'hardware': 'Hardware, HPC, or low-level systems project',
+                'web': 'Web application or online service',
+                'mobile': 'Mobile application project'
+            };
+            return descriptions[type] || 'Project type';
+        }
+
+        showTooltip(event, type) {
+            const existingTooltip = document.querySelector('.icon-tooltip');
+            if (existingTooltip) {
+                existingTooltip.remove();
+            }
+
+            const tooltip = document.createElement('div');
+            tooltip.className = 'icon-tooltip';
+            tooltip.textContent = this.getTypeDescription(type);
+            
+            const rect = event.currentTarget.getBoundingClientRect();
+            tooltip.style.cssText = `
+                position: fixed;
+                left: ${rect.left + rect.width / 2}px;
+                top: ${rect.top - 40}px;
+                transform: translateX(-50%);
+                background: rgba(0, 48, 87, 0.95);
+                color: white;
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                white-space: nowrap;
+                z-index: 1000;
+                pointer-events: none;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            `;
+
+            const arrow = document.createElement('div');
+            arrow.style.cssText = `
+                position: absolute;
+                bottom: -4px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 6px solid rgba(0, 48, 87, 0.95);
+            `;
+            tooltip.appendChild(arrow);
+
+            document.body.appendChild(tooltip);
+        }
+
+        hideTooltip() {
+            const tooltip = document.querySelector('.icon-tooltip');
+            if (tooltip) {
+                tooltip.remove();
+            }
+        }
+
+        showDescriptionPopup(projectName, description) {
+            // Remove any existing popup
+            this.closeDescriptionPopup();
+
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'description-overlay';
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            overlay.onclick = (e) => {
+                if (e.target === overlay) {
+                    this.closeDescriptionPopup();
+                }
+            };
+
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto';
+            popup.innerHTML = `
+                <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 sm:p-6 flex items-start justify-between">
+                    <h3 class="text-lg sm:text-xl font-bold text-brand-navy dark:text-brand-gold pr-4">${projectName}</h3>
+                    <button 
+                        onclick="window.libreLinker.closeDescriptionPopup()"
+                        class="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                        aria-label="Close">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4 sm:p-6">
+                    <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">${description}</p>
+                </div>
+            `;
+
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+
+            // Prevent body scroll when popup is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        closeDescriptionPopup() {
+            const overlay = document.getElementById('description-overlay');
+            if (overlay) {
+                overlay.remove();
+                document.body.style.overflow = '';
+            }
+        }
+
+        showTechnologiesPopup(projectName, technologies) {
+            // Remove any existing popup
+            this.closeDescriptionPopup();
+
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'description-overlay';
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+            overlay.onclick = (e) => {
+                if (e.target === overlay) {
+                    this.closeDescriptionPopup();
+                }
+            };
+
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'bg-white dark:bg-gray-800 rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto';
+            popup.innerHTML = `
+                <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 sm:p-6 flex items-start justify-between">
+                    <h3 class="text-lg sm:text-xl font-bold text-brand-navy dark:text-brand-gold pr-4">${projectName} - Technologies</h3>
+                    <button 
+                        onclick="window.libreLinker.closeDescriptionPopup()"
+                        class="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Close">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-4 sm:p-6">
+                    <div class="flex flex-wrap gap-2">
+                        ${technologies.map(tech => `
+                            <span class="px-3 py-1.5 bg-brand-gold bg-opacity-10 dark:bg-opacity-20 text-brand-navy dark:text-brand-gold text-sm font-medium rounded-full border border-brand-gold border-opacity-20">
+                                ${tech}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+
+            // Prevent body scroll when popup is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        render() {
+            const tbody = document.getElementById('projects-tbody');
+            if (!this.projects.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-8 text-gray-500">
+                            No projects found. Add projects to projects.json to get started.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            const sorted = this.sortProjects();
+            
+            if (sorted.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-16">
+                            <div class="text-6xl mb-4">☹️</div>
+                            <p class="text-gray-600 font-medium">No projects match your selected filters</p>
+                            <p class="text-gray-500 text-sm mt-2">Try selecting different project types</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            tbody.innerHTML = sorted.map(project => `
+                <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-brand-gold hover:bg-opacity-5 dark:hover:bg-opacity-10 transition-colors">
+                    <td class="py-2 sm:py-3 px-2 sm:px-4">
+                        <div class="flex items-center gap-2 sm:gap-3">
+                            <div class="w-8 h-8 sm:w-12 sm:h-12 rounded ${project.logo ? 'bg-white dark:bg-gray-700 border-2 border-brand-gold' : 'bg-gradient-to-br from-brand-navy to-brand-gold dark:from-gray-700 dark:to-brand-gold'} flex items-center justify-center flex-shrink-0">
+                                ${project.logo ? 
+                                    `<img src="${project.logo}" alt="${project.name}" class="max-h-full max-w-full object-contain p-1">` :
+                                    `<span class="text-white font-bold text-sm sm:text-lg">${project.name.charAt(0)}</span>`
+                                }
+                            </div>
+                            <div class="min-w-0">
+                                <div class="font-bold text-brand-navy dark:text-brand-gold text-sm sm:text-base">${project.name}</div>
+                                ${project.url ? 
+                                    `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="inline-block mt-0.5 sm:mt-1 px-2 sm:px-3 py-0.5 sm:py-1 bg-brand-gold text-white text-[10px] sm:text-xs font-medium rounded hover:bg-opacity-90 transition-colors">View →</a>` :
+                                    ''
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4">
+                        <div class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 line-clamp-2 sm:line-clamp-3 cursor-pointer hover:text-brand-gold transition-colors" 
+                             onclick="window.libreLinker.showDescriptionPopup('${project.name}', \`${project.description.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">
+                            ${project.description}
+                        </div>
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4">
+                        <div class="flex gap-1 sm:gap-2 flex-wrap">
+                            ${project.types.map(type => `
+                                <div class="text-brand-gold flex-shrink-0 cursor-pointer hover:scale-110 transition-transform [&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-6 sm:[&>svg]:h-6" 
+                                     data-type="${type}"
+                                     onmouseenter="window.libreLinker.showTooltip(event, '${type}')"
+                                     onmouseleave="window.libreLinker.hideTooltip()">
+                                    ${this.getProjectIcon(type)}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4">
+                        <div class="flex flex-wrap gap-1 sm:gap-1.5 cursor-pointer" 
+                             onclick="window.libreLinker.showTechnologiesPopup('${project.name}', ${JSON.stringify(project.technologies).replace(/"/g, '&quot;')})">
+                            ${project.technologies.slice(0, 2).map(tech => `
+                                <span class="px-1.5 sm:px-2 py-0.5 bg-brand-gold bg-opacity-10 text-brand-navy dark:text-brand-gold text-[10px] sm:text-xs rounded-full whitespace-nowrap hover:bg-brand-gold hover:text-white transition-colors">
+                                    ${tech}
+                                </span>
+                            `).join('')}
+                            ${project.technologies.length > 2 ? 
+                                `<span class="px-1.5 sm:px-2 py-0.5 text-gray-500 text-[10px] sm:text-xs hover:text-brand-gold transition-colors">+${project.technologies.length - 2}</span>` : 
+                                ''
+                            }
+                        </div>
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4 text-center">
+                        <span class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 font-medium">${project.yearStarted}</span>
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4 text-center">
+                        ${Array.isArray(project.license) 
+                            ? project.license.map(lic => `
+                                <a href="https://directory.fsf.org/wiki/License:${lic.replace(/\s+/g, '')}" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer"
+                                   class="block text-[10px] sm:text-xs text-brand-gold hover:underline font-mono cursor-pointer mb-1">
+                                    ${lic}
+                                </a>
+                            `).join('')
+                            : `<a href="https://directory.fsf.org/wiki/License:${project.license.replace(/\s+/g, '')}" 
+                                 target="_blank" 
+                                 rel="noopener noreferrer"
+                                 class="text-[10px] sm:text-xs text-brand-gold hover:underline font-mono cursor-pointer">
+                                  ${project.license}
+                              </a>`
+                        }
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4 text-center">
+                        <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-[10px] sm:text-xs font-medium rounded-full whitespace-nowrap">
+                            ${project.status}
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        window.libreLinker = new LibreLinker();
+        
+        // Close description popup on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && window.libreLinker) {
+                window.libreLinker.closeDescriptionPopup();
+            }
+        });
+    });
+    
+    // @license-end
+    </script>
+
+    <!-- Header -->
+    <header class="bg-brand-navy text-white shadow-lg flex-shrink-0">
+        <div class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <img src="misc/img/GTLTC_LOGO_SOLO.webp" alt="LibreLinker Logo" class="h-8 sm:h-12 w-auto">
+                    <div>
+                        <h1 class="text-lg sm:text-2xl font-bold">LibreLinker</h1>
+                        <p class="text-brand-gold text-xs hidden sm:block">Connecting Ideas, Building Tomorrow</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button id="theme-toggle" 
+                            class="p-2 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors"
+                            aria-label="Toggle dark mode">
+                        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <svg id="theme-icon-moon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                    <a href="https://ltc.gtorg.gatech.edu/" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="px-3 sm:px-4 py-1.5 sm:py-2 bg-brand-gold text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                        <span class="hidden sm:inline">LibreTech Collective Homepage</span>
+                        <span class="sm:hidden">LTC Homepage</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+        <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-2xl sm:text-3xl font-bold text-brand-navy dark:text-brand-gold mb-3 sm:mb-4">Discover Free Software & Hardware Projects</h2>
+                <p class="text-gray-700 dark:text-gray-300 text-sm sm:text-base mb-2 leading-relaxed">
+                    A curated collection of innovative open projects spanning AI, chemistry, hardware, and beyond - all seeking contributors!
+                </p>
+                <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed">
+                    All projects <a href="https://www.gnu.org/philosophy/free-sw.en.html" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">respect your freedom</a> and are GPL-compatible. <span class="font-medium">Most all are led by Georgia Tech students and faculty</span>.
+                    <br class="hidden sm:block">
+                    <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline font-medium">LibreTech Collective</a>, Georgia Tech’s only Free & Open-Source club, invites you to explore, contribute, and make an impact!
+                </p>
+            </div>
+            
+            <!-- Filter Section -->
+            <div class="mt-4 sm:mt-6">
+                <div class="flex items-center justify-center gap-2 flex-wrap">
+                    <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300 w-full sm:w-auto text-center sm:text-left mb-1 sm:mb-0">Filter by type:</span>
+                    <button data-filter-type="ai" class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1 sm:gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        AI
+                    </button>
+                    <button data-filter-type="academic" class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1 sm:gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 14l9-5-9-5-9 5 9 5z"/>
+                            <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                        </svg>
+                        Academic
+                    </button>
+                    <button data-filter-type="research" class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1 sm:gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                        Research
+                    </button>
+                    <button data-filter-type="hardware" class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1 sm:gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                        </svg>
+                        Hardware
+                    </button>
+                    <button data-filter-type="web" class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1 sm:gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                        Web
+                    </button>
+                    <button data-filter-type="mobile" class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200 flex items-center gap-1 sm:gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                        Mobile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Table -->
+        <div class="container mx-auto px-4 sm:px-6 pb-6">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-x-auto border border-gray-200 dark:border-gray-600">
+                <table class="w-full sm:min-w-[640px]">
+                    <thead class="bg-brand-navy dark:bg-gray-900 text-white sticky top-0 z-10">
+                        <tr>
+                            <th data-sort="name" class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-48 sm:w-64 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                                Project <span class="sort-icon opacity-30">↕</span>
+                            </th>
+                            <th class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm">Description</th>
+                            <th class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-20 sm:w-24">Type</th>
+                            <th class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-40 sm:w-56">Technologies</th>
+                            <th data-sort="yearStarted" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-16 sm:w-24 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                                Year <span class="sort-icon opacity-30">↕</span>
+                            </th>
+                            <th data-sort="license" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-24 sm:w-32 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                                License <span class="sort-icon opacity-30">↕</span>
+                            </th>
+                            <th data-sort="status" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-28 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                                Status <span class="sort-icon opacity-30">↕</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="projects-tbody">
+                        <!-- Projects will be loaded here -->
+                        <tr>
+                            <td colspan="7" class="text-center py-8">
+                                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-brand-gold"></div>
+                                <p class="text-gray-500 mt-2 text-sm">Loading projects...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Separator -->
+        <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <div class="border-t border-gray-200"></div>
+        </div>
+
+        <!-- Contact Form -->
+        <section class="bg-white dark:bg-gray-900 py-6 sm:py-8">
+            <div class="container mx-auto px-4 sm:px-6">
+                <div class="max-w-2xl mx-auto">
+                    <h3 class="text-xl sm:text-2xl font-bold text-brand-navy dark:text-brand-gold mb-3 sm:mb-4 text-center">Get In Contact</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-4 sm:mb-6 text-center">
+                        Have a project to add or a question? Fill out the form below and we'll get back to you!
+                    </p>
+                    
+                    <form id="contact-form" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 space-y-3 sm:space-y-4">
+                        <!-- Reason Dropdown -->
+                        <div>
+                            <label for="reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Reason for Contact <span class="text-red-500">*</span>
+                            </label>
+                            <select 
+                                id="reason" 
+                                name="reason" 
+                                required
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent">
+                                <option value="">Select a reason...</option>
+                                <option value="LIBRELINKER: NEW PROJECT ADDITION REQUEST">New Project Addition Request</option>
+                                <option value="LIBRELINKER: PROJECT UPDATE REQUEST">Project Update Request</option>
+                                <option value="LIBRELINKER: GENERAL INQUIRY">General Inquiry</option>
+                                <option value="LIBRELINKER: BUG REPORT">Bug Report</option>
+                                <option value="LIBRELINKER: FEEDBACK">Feedback</option>
+                            </select>
+                        </div>
+
+                        <!-- User Email -->
+                        <div>
+                            <label for="user-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Your Email Address <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="email" 
+                                id="user-email" 
+                                name="user-email" 
+                                required
+                                placeholder="your.email@example.com"
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent">
+                        </div>
+
+                        <!-- Message -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Message <span class="text-red-500">*</span>
+                            </label>
+                            <textarea 
+                                id="message" 
+                                name="message" 
+                                rows="5" 
+                                required
+                                placeholder="Tell us more about your request..."
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent resize-none"></textarea>
+                        </div>
+
+                        <!-- GPL License Confirmation (for project additions/updates) -->
+                        <div id="gpl-confirm-container" class="flex items-start hidden">
+                            <input 
+                                type="checkbox" 
+                                id="gpl-confirm" 
+                                name="gpl-confirm"
+                                class="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold border-gray-300 rounded">
+                            <label for="gpl-confirm" class="ml-2 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                                <span>I confirm this project features a GPL compatible license <span class="text-red-500">*</span></span>
+                                <div class="relative inline-block">
+                                    <button 
+                                        type="button"
+                                        id="gpl-help-btn"
+                                        class="w-4 h-4 rounded-full bg-brand-navy text-white text-xs flex items-center justify-center hover:bg-brand-gold transition-colors cursor-help"
+                                        aria-label="Help about GPL compatible licenses">
+                                        ?
+                                    </button>
+                                    <div 
+                                        id="gpl-tooltip"
+                                        class="hidden absolute bottom-full right-0 sm:left-1/2 sm:transform sm:-translate-x-1/2 mb-2 w-64 sm:w-72 bg-brand-navy text-white text-xs rounded-lg p-3 shadow-lg z-50">
+                                        <p class="mb-2">Per LibreTech policy, all projects worked on by the club must be free software. Meaning it respects your 4 freedoms.</p>
+                                        <a href="https://www.gnu.org/philosophy/free-sw.en.html" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">Learn about the 4 freedoms →</a>
+                                        <p class="mt-2">LTC doesn't take sides in the copyleft vs. permissive license debate; our priority is protecting users' freedom. Permissive GPL-compatible licenses (for example, Apache 2.0 and MIT) are permitted.</p>
+                                        <div class="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-brand-navy"></div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- General Confirmation (for other inquiries) -->
+                        <div id="general-confirm-container" class="flex items-start hidden">
+                            <input 
+                                type="checkbox" 
+                                id="general-confirm" 
+                                name="general-confirm"
+                                class="mt-1 h-4 w-4 text-brand-gold focus:ring-brand-gold border-gray-300 rounded">
+                            <label for="general-confirm" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <span>Are you sure you want to submit? <span class="text-red-500">*</span></span>
+                            </label>
+                        </div>
+
+                        <!-- Georgia Tech Affiliation -->
+                        <div>
+                            <label for="gt-affiliation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Georgia Tech Affiliation <span class="text-red-500">*</span>
+                            </label>
+                            <select 
+                                id="gt-affiliation" 
+                                name="gt-affiliation" 
+                                required
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent">
+                                <option value="">Select your affiliation...</option>
+                                <option value="I'm with Georgia Tech">I'm with Georgia Tech</option>
+                                <option value="I'm not with Georgia Tech">I'm not with Georgia Tech</option>
+                            </select>
+                        </div>
+
+                        <!-- hCaptcha -->
+                        <div class="flex justify-center">
+                            <div class="h-captcha" data-sitekey="ef6a647c-2404-4418-ae6e-8b02691c9bf0" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired" data-error-callback="onCaptchaError"></div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-2">
+                            <button 
+                                type="submit" 
+                                id="submit-btn"
+                                disabled
+                                class="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-medium transition-colors cursor-not-allowed">
+                                Send Message
+                            </button>
+                        </div>
+
+                        <!-- Success/Error Message -->
+                        <div id="form-message" class="hidden text-center text-sm"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <script>
+        // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
+        
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init('Jnr_UizV5u1ofINaQ'); // Get this from EmailJS dashboard
+        })();
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-icon-sun');
+        const moonIcon = document.getElementById('theme-icon-moon');
+        
+        function updateThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeIcons();
+        });
+        
+        // Initialize theme icons on load
+        updateThemeIcons();
+        
+        // Elements
+        const reasonSelect = document.getElementById('reason');
+        const gplConfirmContainer = document.getElementById('gpl-confirm-container');
+        const generalConfirmContainer = document.getElementById('general-confirm-container');
+        const gplCheckbox = document.getElementById('gpl-confirm');
+        const generalCheckbox = document.getElementById('general-confirm');
+        const submitBtn = document.getElementById('submit-btn');
+        const gplHelpBtn = document.getElementById('gpl-help-btn');
+        const gplTooltip = document.getElementById('gpl-tooltip');
+        
+        // Handle reason selection change
+        reasonSelect.addEventListener('change', function() {
+            const selectedReason = this.value;
+            
+            // Reset checkboxes
+            gplCheckbox.checked = false;
+            generalCheckbox.checked = false;
+            gplCheckbox.removeAttribute('required');
+            generalCheckbox.removeAttribute('required');
+            
+            // Show appropriate checkbox based on reason
+            if (selectedReason === 'LIBRELINKER: NEW PROJECT ADDITION REQUEST' || 
+                selectedReason === 'LIBRELINKER: PROJECT UPDATE REQUEST') {
+                gplConfirmContainer.classList.remove('hidden');
+                generalConfirmContainer.classList.add('hidden');
+                gplCheckbox.setAttribute('required', 'required');
+            } else if (selectedReason !== '') {
+                gplConfirmContainer.classList.add('hidden');
+                generalConfirmContainer.classList.remove('hidden');
+                generalCheckbox.setAttribute('required', 'required');
+            } else {
+                gplConfirmContainer.classList.add('hidden');
+                generalConfirmContainer.classList.add('hidden');
+            }
+            
+            updateSubmitButton();
+        });
+        
+        // GPL help tooltip functionality
+        gplHelpBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            gplTooltip.classList.toggle('hidden');
+        });
+        
+        // Close tooltip when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!gplHelpBtn.contains(e.target) && !gplTooltip.contains(e.target)) {
+                gplTooltip.classList.add('hidden');
+            }
+        });
+        
+        // hCaptcha state
+        let captchaToken = null;
+        
+        // Function to update submit button state
+        function updateSubmitButton() {
+            const isGplVisible = !gplConfirmContainer.classList.contains('hidden');
+            const isGeneralVisible = !generalConfirmContainer.classList.contains('hidden');
+            const checkboxValid = (isGplVisible && gplCheckbox.checked) || (isGeneralVisible && generalCheckbox.checked);
+            
+            // Both checkbox AND captcha must be valid
+            if (checkboxValid && captchaToken) {
+                submitBtn.disabled = false;
+                submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.className = 'w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-medium transition-colors cursor-not-allowed';
+            }
+        }
+        
+        // Enable/disable submit button based on checkbox state
+        gplCheckbox.addEventListener('change', updateSubmitButton);
+        generalCheckbox.addEventListener('change', updateSubmitButton);
+        
+        // hCaptcha callbacks
+        window.onCaptchaSuccess = function(token) {
+            captchaToken = token;
+            console.log('hCaptcha verified successfully');
+            updateSubmitButton();
+        };
+        
+        window.onCaptchaExpired = function() {
+            captchaToken = null;
+            console.log('hCaptcha expired');
+            updateSubmitButton();
+        };
+        
+        window.onCaptchaError = function(error) {
+            captchaToken = null;
+            console.error('hCaptcha error:', error);
+            updateSubmitButton();
+        };
+        
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const messageDiv = document.getElementById('form-message');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Verify hCaptcha
+            if (!captchaToken) {
+                messageDiv.textContent = '✗ Please complete the captcha verification.';
+                messageDiv.className = 'text-center text-sm text-red-600 font-medium';
+                messageDiv.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    messageDiv.classList.add('hidden');
+                }, 5000);
+                return;
+            }
+            
+            // Disable submit button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="inline-block animate-pulse">Sending...</span>';
+            submitBtn.className = 'w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-medium transition-colors cursor-not-allowed';
+            
+            // Prepare template parameters
+            const isGplVisible = !gplConfirmContainer.classList.contains('hidden');
+            const templateParams = {
+                reason: document.getElementById('reason').value,
+                user_email: document.getElementById('user-email').value,
+                message: document.getElementById('message').value,
+                gpl_confirm: isGplVisible && gplCheckbox.checked ? true : null,
+                gt_affiliation: document.getElementById('gt-affiliation').value,
+                to_email: 'librelinker@gtltc.org'
+            };
+            
+            // Send email using EmailJS
+            emailjs.send('service_q1pet98', 'template_dhp34yt', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    messageDiv.textContent = '✓ Message sent successfully! We\'ll get back to you soon.';
+                    messageDiv.className = 'text-center text-sm text-green-600 font-medium';
+                    messageDiv.classList.remove('hidden');
+                    
+                    // Reset form
+                    document.getElementById('contact-form').reset();
+                    gplCheckbox.checked = false;
+                    generalCheckbox.checked = false;
+                    gplConfirmContainer.classList.add('hidden');
+                    generalConfirmContainer.classList.add('hidden');
+                    gplCheckbox.removeAttribute('required');
+                    generalCheckbox.removeAttribute('required');
+                    captchaToken = null;
+                    hcaptcha.reset();
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.className = 'w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-medium transition-colors cursor-not-allowed';
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        messageDiv.classList.add('hidden');
+                    }, 5000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    messageDiv.textContent = '✗ Failed to send message. Please try again or email us directly at librelinker@gtltc.org';
+                    messageDiv.className = 'text-center text-sm text-red-600 font-medium';
+                    messageDiv.classList.remove('hidden');
+                    
+                    // Reset captcha and re-enable submit button
+                    captchaToken = null;
+                    hcaptcha.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
+                    
+                    // Hide error message after 7 seconds
+                    setTimeout(() => {
+                        messageDiv.classList.add('hidden');
+                    }, 7000);
+                });
+        });
+        
+        // @license-end
+    </script>
+
+    <!-- Footer -->
+    <footer class="bg-brand-navy text-white flex-shrink-0">
+        <div class="container mx-auto px-4 sm:px-6 py-3">
+            <div class="text-center">
+                <p class="text-[10px] sm:text-xs text-gray-300">
+                <a href="https://github.com/LTC-GT/LibreLinker" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">© LibreLinker</a> • Built With ❤️ by <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">LibreTech Collective @ Georgia Tech</a> • License: <a href="https://github.com/LTC-GT/LibreLinker/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">GPLv3</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
