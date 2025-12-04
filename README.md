@@ -79,7 +79,6 @@ See the [LICENSE](LICENSE.md) file for details.
 
 ## Contact
 
-- **Website**: [librelinker.org](https://librelinker.org)
 - **Organization**: [LibreTech Collective @ Georgia Tech](https://ltc.gtorg.gatech.edu/)
 - **Email**: librelinker@gtltc.org
 
