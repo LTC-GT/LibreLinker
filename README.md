@@ -1,8 +1,6 @@
-# LibreLinker
+# 🐝 LibreLinker
 
-A curated collection of innovative open-source projects from Georgia Tech spanning AI, research, hardware, and beyond.
-
-## About
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 LibreLinker showcases free and open-source projects developed by the Georgia Tech community. Our mission is to connect ideas and build tomorrow by highlighting projects that respect user freedom and follow GPL-compatible licenses.
 
@@ -84,10 +82,6 @@ See the [LICENSE](LICENSE.md) file for details.
 - **Website**: [librelinker.org](https://librelinker.org)
 - **Organization**: [LibreTech Collective @ Georgia Tech](https://ltc.gtorg.gatech.edu/)
 - **Email**: librelinker@gtltc.org
-
-## Credits
-
-Built with ❤️ by the LibreTech Collective at Georgia Tech.
 
 ---
 
