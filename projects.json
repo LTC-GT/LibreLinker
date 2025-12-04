@@ -62,7 +62,7 @@
     {
         "name": "Apache Airavata",
         "description": "Apache Airavata is an open-source software framework that simplifies complex computational experiments by providing robust solutions across three core areas: Data Management, Security, and Execution Management. It empowers scientists to leverage distributed computing resources seamlessly while enabling developers to build customizable science gateways.",
-        "types": ["ai", "hardware", "research"],
+        "types": ["ai", "hardware", "enterprise"],
         "technologies": ["AI/ML", "HPC", "Distributed Computing", "Java", "Apache Thrift"],
         "license": "Apache-2.0",
         "yearStarted": 2014,
@@ -170,7 +170,7 @@
     {
         "name": "TrustGraph AI",
         "description": "TrustGraph eliminates AI hallucinations by ingesting structured and unstructured data into private knowledge graphs with deep data relationships. It provides GraphRAG architecture with Model Context Protocol (MCP) integration, reusable knowledge cores, and full observability for building trustworthy AI agents powered by your own data.",
-        "types": ["ai", "web"],
+        "types": ["ai", "web", "enterprise"],
         "technologies": ["GraphRAG", "Knowledge Graphs", "Python", "MCP", "Neo4j"],
         "license": "Apache-2.0",
         "yearStarted": 2024,
