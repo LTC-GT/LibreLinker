@@ -428,7 +428,7 @@
             if (!this.projects.length) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="text-center py-8 text-gray-500">
+                        <td colspan="8" class="text-center py-8 text-gray-500">
                             No projects found. Add projects to projects.json to get started.
                         </td>
                     </tr>
@@ -441,7 +441,7 @@
             if (sorted.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="text-center py-16">
+                        <td colspan="8" class="text-center py-16">
                             <div class="text-6xl mb-4">☹️</div>
                             <p class="text-gray-600 font-medium">No projects match your selected filters</p>
                             <p class="text-gray-500 text-sm mt-2">Try selecting different project types</p>
@@ -526,6 +526,9 @@
                         <span class="px-2 sm:px-3 py-0.5 sm:py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-[10px] sm:text-xs font-medium rounded-full whitespace-nowrap">
                             ${project.status}
                         </span>
+                    </td>
+                    <td class="py-2 sm:py-3 px-2 sm:px-4 text-center">
+                        <span class="text-base sm:text-lg">${project.ltcStarted ? '✅' : '-'}</span>
                     </td>
                 </tr>
             `).join('');
@@ -668,6 +671,9 @@
                             </th>
                             <th data-sort="status" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-28 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
                                 Status <span class="sort-icon opacity-30">↕</span>
+                            </th>
+                            <th data-sort="ltcStarted" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-24 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                                LTC Started? <span class="sort-icon opacity-30">↕</span>
                             </th>
                         </tr>
                     </thead>

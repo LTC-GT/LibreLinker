@@ -8,7 +8,8 @@
         "yearStarted": 2018,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/hpcgarage/spatter"
+        "url": "https://github.com/hpcgarage/spatter",
+        "ltcStarted": false
     },
     {
         "name": "MFC",
@@ -19,7 +20,8 @@
         "yearStarted": 2019,
         "status": "Active",
         "logo": "misc/logos/MFC-logo.webp",
-        "url": "https://mflowcode.github.io"
+        "url": "https://mflowcode.github.io",
+        "ltcStarted": false
     },
     {
         "name": "QCManyBody",
@@ -30,7 +32,8 @@
         "yearStarted": 2024,
         "status": "Active",
         "logo": "misc/logos/QCMB-logo.webp",
-        "url": "https://github.com/MolSSI/QCManyBody"
+        "url": "https://github.com/MolSSI/QCManyBody",
+        "ltcStarted": false
     },
     {
         "name": "Vortex",
@@ -41,7 +44,8 @@
         "yearStarted": 2020,
         "status": "Active",
         "logo": null,
-        "url": "https://vortex.cc.gatech.edu/"
+        "url": "https://vortex.cc.gatech.edu/",
+        "ltcStarted": false
     },
     {
         "name": "CuPBoP",
@@ -52,7 +56,8 @@
         "yearStarted": 2022,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/cupbop/CuPBoP"
+        "url": "https://github.com/cupbop/CuPBoP",
+        "ltcStarted": false
     },
     {
         "name": "Apache Airavata",
@@ -63,7 +68,8 @@
         "yearStarted": 2014,
         "status": "Active",
         "logo": "misc/logos/airavata-logo.webp",
-        "url": "https://airavata.apache.org/"
+        "url": "https://airavata.apache.org/",
+        "ltcStarted": false
     },
     {
         "name": "SLOSH-ML",
@@ -74,7 +80,8 @@
         "yearStarted": 2024,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/LGST-LAB/slosh_ml"
+        "url": "https://github.com/LGST-LAB/slosh_ml",
+        "ltcStarted": false
     },
     {
         "name": "HLSFactory",
@@ -85,7 +92,8 @@
         "yearStarted": 2024,
         "status": "Active",
         "logo": "misc/logos/hlsfactory-logo.webp",
-        "url": "https://sharc-lab.github.io/HLSFactory/docs/"
+        "url": "https://sharc-lab.github.io/HLSFactory/docs/",
+        "ltcStarted": false
     },
     {
         "name": "LightningSim",
@@ -96,7 +104,8 @@
         "yearStarted": 2023,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/sharc-lab/LightningSim"
+        "url": "https://github.com/sharc-lab/LightningSim",
+        "ltcStarted": false
     },
     {
         "name": "Fijjiontrack",
@@ -107,7 +116,8 @@
         "yearStarted": 2020,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/gatechtonics/fijjiontrack"
+        "url": "https://github.com/gatechtonics/fijjiontrack",
+        "ltcStarted": false
     },
     {
         "name": "Qwerty",
@@ -118,7 +128,8 @@
         "yearStarted": 2024,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/gt-tinker/qwerty"
+        "url": "https://github.com/gt-tinker/qwerty",
+        "ltcStarted": false
     },
     {
         "name": "GTSAM",
@@ -129,7 +140,8 @@
         "yearStarted": 2017,
         "status": "Active",
         "logo": null,
-        "url": "https://gtsam.org/"
+        "url": "https://gtsam.org/",
+        "ltcStarted": false
     },
     {
         "name": "AI Fundamentals",
@@ -140,7 +152,8 @@
         "yearStarted": 2025,
         "status": "Active",
         "logo": "misc/logos/AF-logo.webp",
-        "url": "https://github.com/Fedele-AI/AI_Fundamentals"
+        "url": "https://github.com/Fedele-AI/AI_Fundamentals",
+        "ltcStarted": false
     },
     {
         "name": "ML Visualizer",
@@ -151,6 +164,7 @@
         "yearStarted": 2025,
         "status": "Active",
         "logo": null,
-        "url": "https://mlvisualizer.org"
+        "url": "https://mlvisualizer.org",
+        "ltcStarted": false
     }
 ]
