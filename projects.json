@@ -54,7 +54,7 @@
         "technologies": ["CUDA", "RISC-V", "x86", "LLVM", "Compiler Design"],
         "license": "Apache-2.0",
         "yearStarted": 2022,
-        "status": "Active",
+        "status": "Dormant",
         "logo": null,
         "url": "https://github.com/cupbop/CuPBoP",
         "ltcStarted": false
@@ -78,7 +78,7 @@
         "technologies": ["MATLAB", "Aerospace", "GUI", "Fluid Dynamics", "Simulation"],
         "license": "GPL-3.0",
         "yearStarted": 2024,
-        "status": "Active",
+        "status": "Dormant",
         "logo": null,
         "url": "https://github.com/LGST-LAB/slosh_ml",
         "ltcStarted": false
@@ -114,7 +114,7 @@
         "technologies": ["Machine Learning", "Computer Vision", "Geology", "Python", "ImageJ"],
         "license": "Public Domain",
         "yearStarted": 2020,
-        "status": "Active",
+        "status": "Dormant",
         "logo": null,
         "url": "https://github.com/gatechtonics/fijjiontrack",
         "ltcStarted": false
@@ -168,7 +168,7 @@
         "ltcStarted": false
     },
     {
-        "name": "TrustGraph AI",
+        "name": "TrustGraph",
         "description": "TrustGraph eliminates AI hallucinations by ingesting structured and unstructured data into private knowledge graphs with deep data relationships. It provides GraphRAG architecture with Model Context Protocol (MCP) integration, reusable knowledge cores, and full observability for building trustworthy AI agents powered by your own data.",
         "types": ["ai", "web", "enterprise"],
         "technologies": ["GraphRAG", "Knowledge Graphs", "Python", "MCP", "Neo4j"],
