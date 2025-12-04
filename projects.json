@@ -43,7 +43,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2020,
         "status": "Active",
-        "logo": null,
+        "logo": "misc/logos/vortex-logo.webp",
         "url": "https://vortex.cc.gatech.edu/",
         "ltcStarted": false
     },
@@ -165,6 +165,18 @@
         "status": "Active",
         "logo": null,
         "url": "https://mlvisualizer.org",
+        "ltcStarted": false
+    },
+    {
+        "name": "TrustGraph AI",
+        "description": "TrustGraph eliminates AI hallucinations by ingesting structured and unstructured data into private knowledge graphs with deep data relationships. It provides GraphRAG architecture with Model Context Protocol (MCP) integration, reusable knowledge cores, and full observability for building trustworthy AI agents powered by your own data.",
+        "types": ["ai", "web"],
+        "technologies": ["GraphRAG", "Knowledge Graphs", "Python", "MCP", "Neo4j"],
+        "license": "Apache-2.0",
+        "yearStarted": 2024,
+        "status": "Active",
+        "logo": "misc/logos/TG-logo.webp",
+        "url": "https://trustgraph.ai/",
         "ltcStarted": false
     }
 ]
