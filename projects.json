@@ -8,7 +8,7 @@
         "yearStarted": 2018,
         "status": "Active",
         "logo": null,
-        "url": "https://github.com/hpcgarage/spatter",
+        "url": "https://hpcgarage.github.io/spatter/",
         "ltcStarted": false
     },
     {
@@ -180,7 +180,7 @@
         "ltcStarted": false
     },
     {
-        "name": "Sakai LMS",
+        "name": "Sakai",
         "description": "Sakai is a free and open-source learning management system designed to support teaching, learning, research, and collaboration in educational environments. Developed by a community of educators for educators, it provides comprehensive course management, assessments, and collaboration tools with full institutional data ownership and no licensing fees.",
         "types": ["academic", "enterprise", "web"],
         "technologies": ["LMS", "Java", "Education Technology", "LTI", "SCORM"],
