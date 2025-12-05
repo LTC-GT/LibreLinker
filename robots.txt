@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://librelinker.org/sitemap.xml
