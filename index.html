@@ -27,27 +27,19 @@
     <meta name="keywords" content="free & open-source, Georgia Tech, AI, research, hardware, projects, portfolio">
     <meta name="author" content="LibreTech Collective">
     
-    <!-- LibreJS License Information -->
-    <link rel="jslicense" href="/javascript-licenses.html">
-    
     <!-- 100% privacy-first analytics -->
-    <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"
-            data-jslicense="1"
-            data-jslicense-url="/javascript-licenses.html#simple-analytics"></script>
+    <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
     
     <!-- EmailJS for client-side email sending -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
-            data-jslicense="1"
-            data-jslicense-url="/javascript-licenses.html#emailjs"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
     <!-- hCaptcha for bot prevention -->
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"
-            data-jslicense="1"
-            data-jslicense-url="/javascript-licenses.html#tailwind"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
+        // SPDX-License-Identifier: GPL-3.0-or-later
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -70,13 +62,23 @@
         .wiggle-on-hover:hover {
             animation: wiggle 0.4s ease-in-out;
         }
+        
+        /* Pinch-to-zoom table styles */
+        .overflow-x-auto {
+            touch-action: pan-x pan-y;
+            display: flex;
+            justify-content: center;
+        }
+        .overflow-x-auto table {
+            transform-origin: top center;
+            will-change: transform;
+            min-width: 100%;
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 h-screen flex flex-col transition-colors duration-200">
     <!-- Main Application Script -->
-    <script src="app.js" 
-            data-jslicense="1"
-            data-jslicense-url="/javascript-licenses.html#app-js"></script>
+    <script src="app.js"></script>
 
     <!-- Header -->
     <header class="bg-brand-navy text-white shadow-lg flex-shrink-0">

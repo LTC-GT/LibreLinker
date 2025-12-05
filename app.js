@@ -1,5 +1,4 @@
-// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
-
+// SPDX-License-Identifier: GPL-3.0-or-later
 /**
  * LibreLinker
  * Copyright (C) 2025
@@ -43,6 +42,12 @@ class LibreLinker {
         this.sortDirection = 'asc';
         this.hasUserSorted = false;
         this.activeFilters = new Set();
+        
+        // Pinch-to-zoom properties
+        this.scale = 1;
+        this.initialDistance = 0;
+        this.initialScale = 1;
+        
         this.init();
     }
 
@@ -50,6 +55,7 @@ class LibreLinker {
         await this.loadProjects();
         this.setupSortHandlers();
         this.setupFilterHandlers();
+        this.setupPinchZoom();
         this.render();
     }
 
@@ -107,6 +113,78 @@ class LibreLinker {
                 }
                 this.render();
             });
+        });
+    }
+
+    setupPinchZoom() {
+        const tableContainer = document.querySelector('.overflow-x-auto');
+        const table = tableContainer?.querySelector('table');
+        
+        if (!tableContainer || !table) return;
+
+        // Reset zoom on page load
+        this.scale = 1;
+        table.style.transform = 'scale(1)';
+        table.style.transformOrigin = 'top center';
+        table.style.transition = 'none';
+        table.style.width = '100%';
+
+        let touches = [];
+
+        const getDistance = (touch1, touch2) => {
+            const dx = touch2.clientX - touch1.clientX;
+            const dy = touch2.clientY - touch1.clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        };
+
+        const updateTableWidth = (scale) => {
+            // Adjust table width inversely to scale to maintain proper spacing
+            if (scale < 1) {
+                table.style.width = `${100 / scale}%`;
+            } else {
+                table.style.width = '100%';
+            }
+            
+            // Adjust container height to match scaled table height
+            if (scale < 1) {
+                const tableHeight = table.offsetHeight;
+                tableContainer.style.height = `${tableHeight * scale}px`;
+            } else {
+                tableContainer.style.height = 'auto';
+            }
+        };
+
+        tableContainer.addEventListener('touchstart', (e) => {
+            touches = Array.from(e.touches);
+            
+            if (touches.length === 2) {
+                e.preventDefault();
+                this.initialDistance = getDistance(touches[0], touches[1]);
+                this.initialScale = this.scale;
+            }
+        }, { passive: false });
+
+        tableContainer.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                
+                touches = Array.from(e.touches);
+                const currentDistance = getDistance(touches[0], touches[1]);
+                const scaleChange = currentDistance / this.initialDistance;
+                
+                // Calculate new scale with constraints (0.5x to 3x zoom)
+                this.scale = Math.max(0.5, Math.min(3, this.initialScale * scaleChange));
+                
+                table.style.transform = `scale(${this.scale})`;
+                updateTableWidth(this.scale);
+            }
+        }, { passive: false });
+
+        tableContainer.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                touches = [];
+                this.initialDistance = 0;
+            }
         });
     }
 
@@ -735,5 +813,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-// @license-end

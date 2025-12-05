@@ -20,11 +20,10 @@ LibreLinker showcases free and open-source projects developed by the Georgia Tec
 
 ## Technology Stack
 
-- **Frontend**: Vanilla JavaScript with Tailwind CSS
+- **Frontend**: Vanilla JavaScript with Tailwind CSS - MIT License
 - **Email**: EmailJS for client-side email delivery
 - **Captcha**: hCaptcha for bot protection
-- **Analytics**: Simple Analytics (privacy-first, GDPR compliant)
-- **Hosting**: Static site (deployable anywhere)
+- **Analytics**: Simple Analytics (privacy-first, GDPR compliant) - MIT License
 
 ## Local Development
 
@@ -33,9 +32,6 @@ LibreLinker showcases free and open-source projects developed by the Georgia Tec
    ```bash
    # Using Python
    python -m http.server 8000
-   
-   # Using Node.js
-   npx serve
    ```
 3. Navigate to `http://localhost:8000`
 
@@ -51,17 +47,21 @@ To add your project to LibreLinker:
 Your project must:
 - Be free software with a GPL-compatible license
 - Have a Georgia Tech affiliation (contributor, researcher, or student)
-- Be actively maintained or of historical significance
+- Be actively maintained or of significance (TBD by the LibreTech Collective)
 
 ## Project Structure
 
 ```
 librelinker/
-├── index.html          # Main application file
-├── projects.json       # Project data
+├── app.js                  # Main application logic
+├── index.html              # Main application file
+├── LICENSE.md              # Project license
+├── projects.json           # Project data
+├── README.md               # This file
+├── sitemap.xml             # Sitemap for SEO
 ├── misc/
-│   └── img/           # Images and assets
-└── README.md          # This file
+│   ├── img/                # Images and assets
+│   └── logos/              # Project logos
 ```
 
 ## Contributing
