@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://librelinker.org/sitemap.xml
+Sitemap: https://librelinker.us/sitemap.xml
