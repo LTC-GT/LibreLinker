@@ -84,4 +84,4 @@ See the [LICENSE](LICENSE.md) file for details.
 
 ---
 
-*Connecting Ideas, Building Tomorrow*
+*Connecting Ideas, Building Tomorrow, Fighting for Freedom*
