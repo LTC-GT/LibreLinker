@@ -6,7 +6,7 @@ LibreLinker showcases free and open-source projects developed by the Georgia Tec
 
 ## Features
 
-- **Project Showcase**: Browse through a diverse collection of open-source projects
+- **Project Showcase**: Browse through a diverse collection of free & open-source projects
 - **Filtering & Sorting**: Filter projects by type (AI, Hardware, Research, Academic) and sort by various criteria
 - **Contact Form**: Submit new projects or reach out with questions via our integrated contact form
 - **Privacy-First**: Uses privacy-respecting analytics and bot protection

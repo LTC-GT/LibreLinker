@@ -178,5 +178,29 @@
         "logo": "misc/logos/TG-logo.webp",
         "url": "https://trustgraph.ai/",
         "ltcStarted": false
+    },
+    {
+        "name": "Sakai LMS",
+        "description": "Sakai is a free and open-source learning management system designed to support teaching, learning, research, and collaboration in educational environments. Developed by a community of educators for educators, it provides comprehensive course management, assessments, and collaboration tools with full institutional data ownership and no licensing fees.",
+        "types": ["academic", "enterprise", "web"],
+        "technologies": ["LMS", "Java", "Education Technology", "LTI", "SCORM"],
+        "license": "ECL-2.0",
+        "yearStarted": 2004,
+        "status": "Active",
+        "logo": "misc/logos/sakai-logo.webp",
+        "url": "https://www.apereo.org/programs/software/sakai-lms",
+        "ltcStarted": false
+    },
+    {
+        "name": "CAS",
+        "description": "CAS (Central Authentication Service) is a multilingual single sign-on solution and open-source identity provider for enterprise authentication and authorization. It provides seamless SSO across web applications, advanced security features including multi-factor authentication, session management, and single logout. Trusted globally from academia to Fortune 500 companies.",
+        "types": ["enterprise", "web"],
+        "technologies": ["SSO", "Authentication", "Identity Management", "Java", "Multi-Factor Authentication"],
+        "license": "Apache-2.0",
+        "yearStarted": 2004,
+        "status": "Active",
+        "logo": "misc/logos/cas-logo.webp",
+        "url": "https://www.apereo.org/programs/software/cas",
+        "ltcStarted": false
     }
 ]
