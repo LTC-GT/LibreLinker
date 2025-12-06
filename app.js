@@ -738,11 +738,178 @@ document.addEventListener('DOMContentLoaded', () => {
         return text;
     }
     
+    // Detect iOS Safari (WebKit on iOS)
+    function isIOSSafari() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isiOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isWebKit = /AppleWebKit/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+        return isiOS && isWebKit;
+    }
+
+    // Canvas-based captcha for iOS Safari to avoid transform/filter text bugs
+    function renderCanvasCaptcha(captchaTextEl, text) {
+        captchaTextEl.innerHTML = '';
+        const canvas = document.createElement('canvas');
+        const width = captchaTextEl.clientWidth || 320;
+        const height = 70;
+        canvas.width = width * window.devicePixelRatio;
+        canvas.height = height * window.devicePixelRatio;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        const ctx = canvas.getContext('2d');
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        ctx.textBaseline = 'middle';
+
+        // Background
+        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--tw-bg-opacity') ? '#fff' : '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+
+        // Background hatch + light noise lines (subtle for readability)
+        ctx.strokeStyle = 'rgba(128,128,128,0.08)';
+        for (let x = 0; x < width; x += 6) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x + 20, height);
+            ctx.stroke();
+        }
+        for (let i = 0; i < 6; i++) {
+            ctx.strokeStyle = `rgba(${Math.random()*90|0},${Math.random()*90|0},${Math.random()*90|0},0.18)`;
+            ctx.lineWidth = Math.random() * 1.5 + 0.5;
+            ctx.beginPath();
+            ctx.moveTo(Math.random()*width, Math.random()*height);
+            for (let j = 0; j < 4; j++) {
+                ctx.lineTo(Math.random()*width, Math.random()*height);
+            }
+            ctx.stroke();
+        }
+
+        // Background geometric shapes behind text
+        for (let i = 0; i < 6; i++) {
+            const color = `rgba(${Math.random()*120|0},${Math.random()*120|0},${Math.random()*120|0},0.15)`;
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            const cx = Math.random()*width;
+            const cy = Math.random()*height;
+            const size = Math.random()*18 + 10;
+            switch (Math.floor(Math.random()*4)) {
+                case 0: // circle
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, size/2, 0, Math.PI*2);
+                    Math.random()>0.5 ? ctx.fill() : ctx.stroke();
+                    break;
+                case 1: // rect
+                    if (Math.random()>0.5) ctx.fillRect(cx-size/2, cy-size/2, size, size);
+                    else ctx.strokeRect(cx-size/2, cy-size/2, size, size);
+                    break;
+                case 2: // triangle
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy-size/2);
+                    ctx.lineTo(cx+size/2, cy+size/2);
+                    ctx.lineTo(cx-size/2, cy+size/2);
+                    ctx.closePath();
+                    Math.random()>0.5 ? ctx.fill() : ctx.stroke();
+                    break;
+                default: // diamond
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy-size/2);
+                    ctx.lineTo(cx+size/2, cy);
+                    ctx.lineTo(cx, cy+size/2);
+                    ctx.lineTo(cx-size/2, cy);
+                    ctx.closePath();
+                    Math.random()>0.5 ? ctx.fill() : ctx.stroke();
+            }
+        }
+
+        // Draw text characters with small random transforms
+        const fonts = ['Menlo','Courier New','monospace','Helvetica','Arial','sans-serif','Times','serif'];
+        const charSpacing = width / (text.length + 1);
+        for (let i = 0; i < text.length; i++) {
+            const r = Math.floor(Math.random()*150);
+            const g = Math.floor(Math.random()*150);
+            const b = Math.floor(Math.random()*150);
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            const rotation = (Math.random()*0.5 - 0.25); // less rotation for readability
+            const yJitter = Math.random()*8 - 4;
+            const scale = 0.95 + Math.random()*0.15; // smaller scale jitter
+            const fontSize = 28 * scale;
+            ctx.font = `${Math.random()>0.5?'700':'400'} ${fontSize}px ${fonts[Math.floor(Math.random()*fonts.length)]}`;
+            const x = (i+1)*charSpacing + (Math.random()*10-5);
+            const y = height/2 + yJitter;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+            ctx.shadowColor = 'rgba(0,0,0,0.12)';
+            ctx.shadowBlur = 1.5;
+            ctx.shadowOffsetX = Math.random()*2-1;
+            ctx.shadowOffsetY = Math.random()*2-1;
+            ctx.fillText(text[i], 0, 0);
+            ctx.restore();
+        }
+
+        // Overlay lines + shapes above text (stronger but controlled)
+        for (let i = 0; i < 5; i++) {
+            ctx.strokeStyle = `rgba(${Math.random()*110|0},${Math.random()*110|0},${Math.random()*110|0},0.55)`;
+            ctx.lineWidth = Math.random()*2.2 + 1.2;
+            ctx.beginPath();
+            ctx.moveTo(-10, Math.random()*height);
+            let currentX = -10;
+            while (currentX < width+10) {
+                currentX += Math.random()*18 + 6;
+                ctx.lineTo(currentX, Math.random()*height);
+            }
+            ctx.stroke();
+        }
+
+        for (let i = 0; i < 6; i++) {
+            const color = `rgba(${Math.random()*140|0},${Math.random()*140|0},${Math.random()*140|0},0.35)`;
+            ctx.fillStyle = color;
+            const cx = Math.random()*width;
+            const cy = Math.random()*height;
+            const size = Math.random()*16 + 8;
+            ctx.beginPath();
+            ctx.arc(cx, cy, size/2, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        // Per-character squiggle overlays to cross glyphs without fully obscuring
+        const charSpacingForOverlay = width / (text.length + 1);
+        for (let i = 0; i < text.length; i++) {
+            const baseX = (i+1)*charSpacingForOverlay;
+            const baseY = height/2;
+            ctx.strokeStyle = `rgba(${Math.random()*90|0},${Math.random()*90|0},${Math.random()*90|0},0.6)`;
+            ctx.lineWidth = Math.random()*1.6 + 1.2;
+            ctx.beginPath();
+            // Small zigzag crossing the character area
+            const startX = baseX - 14 + (Math.random()*6-3);
+            const startY = baseY - 18 + (Math.random()*6-3);
+            ctx.moveTo(startX, startY);
+            let segX = startX;
+            let segY = startY;
+            for (let s = 0; s < 6; s++) {
+                segX += 5 + Math.random()*6;
+                segY += (s % 2 === 0 ? 1 : -1) * (4 + Math.random()*5);
+                ctx.lineTo(segX, segY);
+            }
+            ctx.stroke();
+        }
+
+        captchaTextEl.appendChild(canvas);
+    }
+
     // Obfuscate text with random styling to prevent OCR
     function obfuscateCaptchaDisplay(text) {
         const captchaTextEl = document.getElementById('captcha-text');
         if (!captchaTextEl) return;
         
+        // Use canvas-based rendering for iOS Safari to avoid a known text + CSS filter/transform rendering bug
+        if (isIOSSafari()) {
+            // Avoid CSS filters/transforms that can cause render glitches
+            captchaTextEl.style.filter = 'none';
+            renderCanvasCaptcha(captchaTextEl, text);
+            return;
+        }
+
         captchaTextEl.innerHTML = '';
         captchaTextEl.style.position = 'relative';
         captchaTextEl.style.overflow = 'hidden';
