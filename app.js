@@ -38,8 +38,8 @@
 class LibreLinker {
     constructor() {
         this.projects = [];
-        this.sortColumn = 'name';
-        this.sortDirection = 'asc';
+        // Multi-column sort state: ordered array of { column, direction }
+        this.sortState = [];
         this.hasUserSorted = false;
         this.activeFilters = new Set();
         
@@ -76,20 +76,24 @@ class LibreLinker {
         headers.forEach(header => {
             header.addEventListener('click', () => {
                 const column = header.getAttribute('data-sort');
-                if (this.sortColumn === column) {
-                    if (this.sortDirection === 'asc') {
-                        this.sortDirection = 'desc';
-                        this.hasUserSorted = true;
-                    } else if (this.sortDirection === 'desc') {
-                        // Third click - reset to default (randomized) state
-                        this.hasUserSorted = false;
-                        this.sortColumn = null;
-                        this.sortDirection = 'asc';
-                    }
-                } else {
-                    this.sortColumn = column;
-                    this.sortDirection = 'asc';
+                // Find existing entry
+                const idx = this.sortState.findIndex(s => s.column === column);
+                if (idx === -1) {
+                    // Add as ascending
+                    this.sortState.push({ column, direction: 'asc' });
                     this.hasUserSorted = true;
+                } else {
+                    const current = this.sortState[idx];
+                    if (current.direction === 'asc') {
+                        // Switch to desc
+                        this.sortState[idx].direction = 'desc';
+                        this.hasUserSorted = true;
+                    } else if (current.direction === 'desc') {
+                        // Remove column (toggle off)
+                        this.sortState.splice(idx, 1);
+                        // If no sorts left, revert to default randomized order
+                        if (this.sortState.length === 0) this.hasUserSorted = false;
+                    }
                 }
                 this.updateSortIndicators();
                 this.render();
@@ -201,11 +205,18 @@ class LibreLinker {
         const headers = document.querySelectorAll('th[data-sort]');
         headers.forEach(header => {
             const icon = header.querySelector('.sort-icon');
-            if (header.getAttribute('data-sort') === this.sortColumn) {
-                icon.textContent = this.sortDirection === 'asc' ? '↑' : '↓';
+            const column = header.getAttribute('data-sort');
+            const state = this.sortState.find(s => s.column === column);
+            if (!icon) return;
+            if (state) {
+                // Render up/down SVG
+                icon.innerHTML = state.direction === 'asc'
+                    ? '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3z"/></svg>'
+                    : '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 15l-3-3h6l-3 3z"/></svg>';
                 icon.classList.remove('opacity-30');
             } else {
-                icon.textContent = '↕';
+                // Bi-directional indicator (neutral)
+                icon.innerHTML = '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3zm0 14l-3-3h6l-3 3z"/></svg>';
                 icon.classList.add('opacity-30');
             }
         });
@@ -213,41 +224,41 @@ class LibreLinker {
 
     sortProjects() {
         const filteredProjects = this.getFilteredProjects();
-        
-        // If no sorting has been done yet (initial state), return projects as-is (randomized)
-        if (!this.hasUserSorted) {
+        if (!this.hasUserSorted || this.sortState.length === 0) {
             return filteredProjects;
         }
 
         const sorted = [...filteredProjects].sort((a, b) => {
-            let aVal = a[this.sortColumn];
-            let bVal = b[this.sortColumn];
+            for (const { column, direction } of this.sortState) {
+                let aVal = a[column];
+                let bVal = b[column];
 
-            // Handle license arrays - use first license for sorting
-            if (this.sortColumn === 'license') {
-                aVal = Array.isArray(aVal) ? aVal[0] : aVal;
-                bVal = Array.isArray(bVal) ? bVal[0] : bVal;
-            }
+                // Special handling for license arrays
+                if (column === 'license') {
+                    aVal = Array.isArray(aVal) ? aVal[0] : aVal;
+                    bVal = Array.isArray(bVal) ? bVal[0] : bVal;
+                }
 
-            // Handle different data types
-            if (typeof aVal === 'string') {
-                aVal = aVal.toLowerCase();
-                bVal = bVal.toLowerCase();
-                
-                // Use localeCompare for proper alphabetical sorting
-                if (this.sortDirection === 'asc') {
-                    return aVal.localeCompare(bVal);
+                // Normalize values
+                const aIsString = typeof aVal === 'string';
+                const bIsString = typeof bVal === 'string';
+                if (aIsString) aVal = aVal.toLowerCase();
+                if (bIsString) bVal = bVal.toLowerCase();
+
+                let cmp = 0;
+                if (aIsString && bIsString) {
+                    cmp = aVal.localeCompare(bVal);
                 } else {
-                    return bVal.localeCompare(aVal);
+                    if (aVal > bVal) cmp = 1;
+                    else if (aVal < bVal) cmp = -1;
+                    else cmp = 0;
+                }
+
+                if (cmp !== 0) {
+                    return direction === 'asc' ? cmp : -cmp;
                 }
             }
-
-            // For numbers and other types
-            if (this.sortDirection === 'asc') {
-                return aVal > bVal ? 1 : aVal < bVal ? -1 : 0;
-            } else {
-                return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
-            }
+            return 0;
         });
         return sorted;
     }
@@ -634,6 +645,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </p>
                     <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
                         <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline font-medium">LibreTech Collective</a>, Georgia Tech's only Free & Open-Source club, invites you to explore, contribute, and make an impact!
+                    </p>
+                    <p class="text-[11px] text-gray-600 dark:text-gray-400 mb-4 text-center flex items-center justify-center gap-1 leading-none">
+                        <span>Built with ❤️ in Atlanta, Georgia</span>
+                        <a href="https://gatech.edu" target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity" aria-label="Visit Georgia Tech">
+                            <img class="inline-block h-4 w-auto" src="misc/img/us-flag.svg" alt="US Flag" style="vertical-align: middle;">
+                        </a>
                     </p>
                     <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
                         <p class="text-gray-600 dark:text-gray-400 text-xs mb-3">Connect with us:</p>
