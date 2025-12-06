@@ -196,8 +196,11 @@ class LibreLinker {
         if (this.activeFilters.size === 0) {
             return this.projects;
         }
+        // AND logic: project must have ALL selected filter types
         return this.projects.filter(project => 
-            project.types.some(type => this.activeFilters.has(type))
+            Array.from(this.activeFilters).every(filterType => 
+                project.types.includes(filterType)
+            )
         );
     }
 
