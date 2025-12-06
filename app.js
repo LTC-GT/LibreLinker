@@ -486,12 +486,14 @@ class LibreLinker {
             <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-brand-gold hover:bg-opacity-5 dark:hover:bg-opacity-10 transition-colors">
                 <td class="py-2 sm:py-3 px-2 sm:px-4">
                     <div class="flex items-center gap-2 sm:gap-3">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 rounded ${project.logo ? 'bg-gray-100 dark:bg-white border-2 border-brand-gold' : 'bg-gradient-to-br from-brand-navy to-brand-gold dark:from-gray-700 dark:to-brand-gold'} flex items-center justify-center flex-shrink-0">
-                            ${project.logo 
-                                ? `<img src="${project.logo}" alt="${project.name} logo" class="w-6 h-6 sm:w-10 sm:h-10 object-contain">`
-                                : `<span class="text-white font-bold text-sm sm:text-xl">${project.name.substring(0, 2).toUpperCase()}</span>`
-                            }
-                        </div>
+                        <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="flex-shrink-0" aria-label="Open ${project.name}">
+                            <div class="w-8 h-8 sm:w-12 sm:h-12 rounded ${project.logo ? 'bg-gray-100 dark:bg-white border-2 border-brand-gold' : 'bg-gradient-to-br from-brand-navy to-brand-gold dark:from-gray-700 dark:to-brand-gold'} flex items-center justify-center">
+                                ${project.logo 
+                                    ? `<img src="${project.logo}" alt="${project.name} logo" class="w-6 h-6 sm:w-10 sm:h-10 object-contain">`
+                                    : `<span class="text-white font-bold text-sm sm:text-xl">${project.name.substring(0, 2).toUpperCase()}</span>`
+                                }
+                            </div>
+                        </a>
                         <div class="min-w-0">
                             <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="text-sm sm:text-base font-semibold text-brand-navy dark:text-brand-gold hover:underline block truncate">
                                 ${project.name}
