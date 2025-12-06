@@ -59,6 +59,13 @@
         .wiggle-on-hover:hover {
             animation: wiggle 0.4s ease-in-out;
         }
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin-once {
+            animation: rotate360 0.5s ease-in-out;
+        }
         
         /* Pinch-to-zoom table styles */
         .overflow-x-auto {
@@ -252,7 +259,7 @@
                                     All projects above have been reviewed by the LibreTech Collective at Georgia Tech and approved for development by LTC. These licenses are all GPL compatible, meaning they respect your freedom to run, study, share, and modify the code.
                                 </p>
                                 <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
-                                    These projects are all either run by Georgia Tech students, faculty, or alumni - or are large community-based projects (like Apache) based here at Georgia Tech.
+                                    These projects are all either run by Georgia Tech students, faculty, or alumni - or are large community-based projects (like Apache & Apereo) based here at Georgia Tech.
                                 </p>
                             </div>
                         </div>
@@ -368,7 +375,7 @@
                                 id="user-email" 
                                 name="user-email" 
                                 required
-                                placeholder="your.email@example.com"
+                                placeholder="gburdell3@gatech.edu"
                                 class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent">
                         </div>
 
@@ -440,6 +447,9 @@
                                     <div id="captcha-text" class="font-mono text-2xl font-bold text-gray-800 dark:text-gray-200 select-none min-h-[60px] flex items-center justify-center relative" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; filter: contrast(0.85) blur(0.4px) brightness(0.95);"></div>
                                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(128,128,128,0.04) 3px, rgba(128,128,128,0.04) 6px), repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(128,128,128,0.03) 3px, rgba(128,128,128,0.03) 6px);"></div>
                                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; background: radial-gradient(circle at 30% 40%, rgba(200,200,200,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(150,150,150,0.08) 0%, transparent 50%);"></div>
+                                    <button id="captcha-refresh" type="button" class="absolute top-2 right-2 p-1.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200" aria-label="Refresh captcha" title="Refresh">
+                                        <span id="captcha-refresh-icon" class="block leading-none text-base">🔄</span>
+                                    </button>
                                 </div>
                                 <input 
                                     type="text" 
