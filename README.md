@@ -4,12 +4,7 @@
 
 LibreLinker showcases free and open-source projects developed by the Georgia Tech community. Our mission is to connect ideas and build tomorrow by highlighting projects that respect user freedom and follow GPL-compatible licenses.
 
-## Features
-
-- **Project Showcase**: Browse through a diverse collection of free & open-source projects
-- **Filtering & Sorting**: Filter projects by type (AI, Hardware, Research, Academic) and sort by various criteria
-- **Contact Form**: Submit new projects or reach out with questions via our integrated contact form
-- **Privacy-First**: Uses privacy-respecting analytics and bot protection
+LibreLinker is proudly built with 100% free software components!
 
 ## Project Categories
 
@@ -21,9 +16,9 @@ LibreLinker showcases free and open-source projects developed by the Georgia Tec
 ## Technology Stack
 
 - **Frontend**: Vanilla JavaScript with Tailwind CSS - MIT License
-- **Email**: EmailJS for client-side email delivery
-- **Captcha**: hCaptcha for bot protection
+- **Email**: EmailJS for client-side email delivery - BSD-3-Clause License
 - **Analytics**: Simple Analytics (privacy-first, GDPR compliant) - MIT License
+- **Bot Protection**: Custom CAPTCHA solution - GPLv3 License (this project)
 
 ## Local Development
 

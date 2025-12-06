@@ -715,8 +715,430 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // hCaptcha state
-    let captchaToken = null;
+    // Custom Bot Prevention System
+    let botPreventionPassed = false;
+    let captchaStartTime = null;
+    let mouseMovements = [];
+    let keystrokes = [];
+    let currentCaptchaText = '';
+    
+    // Generate random garbled text with mixed characters
+    function generateCaptchaText() {
+        // Removed confusing characters: 
+        // l, 1, I (look alike)
+        // O, 0, o, Q (look alike)
+        // S, s, 5 (look alike)
+        // Z, z, 2 (look alike)
+        // B, 8 (look alike)
+        const chars = 'ACDEFGHJKLMNPRTUVWXYabcdefghjkmnpqrtuvwxy34679';
+        let text = '';
+        for (let i = 0; i < 6; i++) {
+            text += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return text;
+    }
+    
+    // Obfuscate text with random styling to prevent OCR
+    function obfuscateCaptchaDisplay(text) {
+        const captchaTextEl = document.getElementById('captcha-text');
+        if (!captchaTextEl) return;
+        
+        captchaTextEl.innerHTML = '';
+        captchaTextEl.style.position = 'relative';
+        captchaTextEl.style.overflow = 'hidden';
+        
+        // Add noise background (random lines/dots)
+        for(let i=0; i<15; i++) {
+            const noise = document.createElement('div');
+            noise.style.position = 'absolute';
+            noise.style.left = Math.random() * 100 + '%';
+            noise.style.top = Math.random() * 100 + '%';
+            noise.style.width = (Math.random() * 20 + 10) + 'px';
+            noise.style.height = '1px';
+            noise.style.background = `rgba(${Math.random()*100}, ${Math.random()*100}, ${Math.random()*100}, 0.2)`;
+            noise.style.transform = `rotate(${Math.random() * 360}deg)`;
+            noise.style.pointerEvents = 'none';
+            captchaTextEl.appendChild(noise);
+        }
+
+        // Add random geometric shapes to confuse OCR
+        for(let i=0; i<8; i++) {
+             const shape = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+             shape.style.position = 'absolute';
+             shape.style.left = Math.random() * 90 + '%';
+             shape.style.top = Math.random() * 80 + 10 + '%';
+             const size = Math.random() * 15 + 10;
+             shape.style.width = size + 'px';
+             shape.style.height = size + 'px';
+             shape.style.transform = `rotate(${Math.random() * 360}deg)`;
+             shape.style.pointerEvents = 'none';
+             shape.style.zIndex = '0';
+             shape.setAttribute("viewBox", "0 0 20 20");
+             
+             const color = `rgba(${Math.random()*100}, ${Math.random()*100}, ${Math.random()*100}, 0.2)`;
+             const shapeType = Math.floor(Math.random() * 5);
+             
+             if (shapeType === 0) { // Circle
+                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                 circle.setAttribute("cx", "10");
+                 circle.setAttribute("cy", "10");
+                 circle.setAttribute("r", "8");
+                 circle.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 circle.setAttribute("stroke", color);
+                 circle.setAttribute("stroke-width", "2");
+                 shape.appendChild(circle);
+             } else if (shapeType === 1) { // Square
+                 const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                 rect.setAttribute("x", "2");
+                 rect.setAttribute("y", "2");
+                 rect.setAttribute("width", "16");
+                 rect.setAttribute("height", "16");
+                 rect.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 rect.setAttribute("stroke", color);
+                 rect.setAttribute("stroke-width", "2");
+                 shape.appendChild(rect);
+             } else if (shapeType === 2) { // Triangle
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,2 18,18 2,18");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "2");
+                 shape.appendChild(polygon);
+             } else if (shapeType === 3) { // Diamond
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,2 18,10 10,18 2,10");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "2");
+                 shape.appendChild(polygon);
+             } else { // Pentagon
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,2 17,8 14,16 6,16 3,8");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "2");
+                 shape.appendChild(polygon);
+             }
+             
+             captchaTextEl.appendChild(shape);
+        }
+
+        // Render actual text
+        for (let i = 0; i < text.length; i++) {
+            const span = document.createElement('span');
+            span.textContent = text[i];
+            span.style.position = 'relative';
+            span.style.display = 'inline-block';
+            span.style.zIndex = '1';
+            
+            // Random rotation
+            const rotation = (Math.random() * 70 - 35);
+            
+            // Random vertical offset
+            const verticalOffset = (Math.random() * 12 - 6);
+            
+            // Random scale
+            const scale = 0.8 + Math.random() * 0.5;
+            
+            // Random font weight
+            span.style.fontWeight = Math.random() > 0.5 ? 'bold' : 'normal';
+
+            // Random font family (if available, or just generic)
+            const fonts = ['monospace', 'sans-serif', 'serif', 'cursive', 'fantasy'];
+            span.style.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
+            
+            span.style.transform = `rotate(${rotation}deg) translateY(${verticalOffset}px) scale(${scale})`;
+            span.style.margin = `0 ${Math.random() * 10 + 2}px`;
+            
+            // Random color (darker for readability)
+            const r = Math.floor(Math.random() * 150);
+            const g = Math.floor(Math.random() * 150);
+            const b = Math.floor(Math.random() * 150);
+            span.style.color = `rgb(${r},${g},${b})`;
+            
+            // Text shadow for more noise
+            span.style.textShadow = `${Math.random()*3-1.5}px ${Math.random()*3-1.5}px 2px rgba(0,0,0,0.15)`;
+            
+            // Random opacity
+            span.style.opacity = 0.7 + Math.random() * 0.3;
+            
+            captchaTextEl.appendChild(span);
+        }
+        
+        // Add jagged lines OVER the text using SVG
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.style.position = 'absolute';
+        svg.style.top = '0';
+        svg.style.left = '0';
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.style.pointerEvents = 'none';
+        svg.style.zIndex = '10'; // High z-index to ensure it's on top
+        svg.setAttribute("viewBox", "0 0 100 100");
+        svg.setAttribute("preserveAspectRatio", "none");
+        
+        // Create 5 jagged lines that cross the text area
+        for(let i=0; i<5; i++) {
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            // Start from left
+            let startY = Math.random() * 60 + 20; // 20% to 80% height
+            let d = `M -10 ${startY}`;
+            let currentX = -10;
+            
+            // Create jagged path across
+            while (currentX < 110) {
+                currentX += Math.random() * 15 + 5;
+                // Vary Y but keep it somewhat centered to cross text
+                let nextY = Math.random() * 80 + 10; 
+                d += ` L ${currentX} ${nextY}`;
+            }
+            
+            path.setAttribute("d", d);
+            path.setAttribute("stroke", `rgba(${Math.random()*100}, ${Math.random()*100}, ${Math.random()*100}, 0.6)`);
+            path.setAttribute("stroke-width", Math.random() * 2 + 1.5);
+            path.setAttribute("fill", "none");
+            // Ensure vector-effect is non-scaling-stroke so lines don't get too thick/thin
+            path.setAttribute("vector-effect", "non-scaling-stroke");
+            svg.appendChild(path);
+        }
+        captchaTextEl.appendChild(svg);
+
+        // Add overlay geometric shapes ON TOP of the text to further confuse OCR
+        for(let i=0; i<15; i++) {
+             const shape = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+             shape.style.position = 'absolute';
+             // Position randomly but bias towards center where text is
+             shape.style.left = Math.random() * 100 + '%';
+             shape.style.top = Math.random() * 80 + 10 + '%';
+             const size = Math.random() * 20 + 10;
+             shape.style.width = size + 'px';
+             shape.style.height = size + 'px';
+             shape.style.transform = `rotate(${Math.random() * 360}deg)`;
+             shape.style.pointerEvents = 'none';
+             shape.style.zIndex = '11'; // On top of everything
+             shape.setAttribute("viewBox", "0 0 20 20");
+             
+             // Semi-transparent overlay colors
+             const color = `rgba(${Math.random()*150}, ${Math.random()*150}, ${Math.random()*150}, 0.5)`;
+             const shapeType = Math.floor(Math.random() * 6);
+             
+             if (shapeType === 0) { // Circle
+                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                 circle.setAttribute("cx", "10");
+                 circle.setAttribute("cy", "10");
+                 circle.setAttribute("r", "6");
+                 circle.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 circle.setAttribute("stroke", color);
+                 circle.setAttribute("stroke-width", "1.5");
+                 shape.appendChild(circle);
+             } else if (shapeType === 1) { // Square
+                 const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                 rect.setAttribute("x", "4");
+                 rect.setAttribute("y", "4");
+                 rect.setAttribute("width", "12");
+                 rect.setAttribute("height", "12");
+                 rect.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 rect.setAttribute("stroke", color);
+                 rect.setAttribute("stroke-width", "1.5");
+                 shape.appendChild(rect);
+             } else if (shapeType === 2) { // Triangle
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,4 16,16 4,16");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "1.5");
+                 shape.appendChild(polygon);
+             } else if (shapeType === 3) { // Diamond
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,3 17,10 10,17 3,10");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "1.5");
+                 shape.appendChild(polygon);
+             } else if (shapeType === 4) { // Star
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "1.5");
+                 shape.appendChild(polygon);
+             } else { // Hexagon
+                 const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                 polygon.setAttribute("points", "10,3 16,7 16,13 10,17 4,13 4,7");
+                 polygon.setAttribute("fill", Math.random() > 0.5 ? color : 'none');
+                 polygon.setAttribute("stroke", color);
+                 polygon.setAttribute("stroke-width", "1.5");
+                 shape.appendChild(polygon);
+             }
+             
+             captchaTextEl.appendChild(shape);
+        }
+    }
+    
+    // Initialize captcha
+    function initBotPrevention() {
+        const captchaTextEl = document.getElementById('captcha-text');
+        const captchaInput = document.getElementById('captcha-input');
+        const widget = document.getElementById('bot-prevention-widget');
+        
+        if (!captchaTextEl || !captchaInput || !widget) return;
+        
+        currentCaptchaText = generateCaptchaText();
+        obfuscateCaptchaDisplay(currentCaptchaText);
+        captchaStartTime = Date.now();
+        mouseMovements = [];
+        keystrokes = [];
+        botPreventionPassed = false;
+        
+        // Track mouse movements in widget area
+        widget.addEventListener('mousemove', function(e) {
+            if (!botPreventionPassed) {
+                mouseMovements.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    time: Date.now()
+                });
+                // Keep only last 50 movements
+                if (mouseMovements.length > 50) mouseMovements.shift();
+            }
+        });
+        
+        // Track keystroke timing
+        captchaInput.addEventListener('keydown', function(e) {
+            if (!botPreventionPassed) {
+                keystrokes.push({
+                    key: e.key,
+                    time: Date.now()
+                });
+            }
+        });
+        
+        captchaInput.addEventListener('input', function() {
+            validateCaptcha();
+        });
+    }
+    
+    // Check if two strings differ by exactly one case confusion
+    function hasOneCaseConfusion(input, expected) {
+        if (input.length !== expected.length) return false;
+        
+        let differences = 0;
+        for (let i = 0; i < input.length; i++) {
+            if (input[i] !== expected[i]) {
+                // Check if it's a case confusion (same letter, different case)
+                if (input[i].toLowerCase() !== expected[i].toLowerCase()) {
+                    return false; // Not just a case difference
+                }
+                differences++;
+                if (differences > 1) return false; // More than one difference
+            }
+        }
+        
+        return differences === 1; // Exactly one case confusion
+    }
+    
+    // Validate human behavior patterns
+    function validateCaptcha() {
+        const captchaInput = document.getElementById('captcha-input');
+        const feedback = document.getElementById('captcha-feedback');
+        
+        if (!captchaInput || !feedback) return;
+        
+        const userInput = captchaInput.value;
+        const timeTaken = Date.now() - captchaStartTime;
+        
+        // Check if input matches (exact or with one case confusion)
+        const isExactMatch = userInput === currentCaptchaText;
+        const isCloseMatch = hasOneCaseConfusion(userInput, currentCaptchaText);
+        
+        if (isExactMatch || isCloseMatch) {
+            // Validate human behavior:
+            // 1. Must take at least 1.5 seconds (humans can't type instantly)
+            // 2. Must have some mouse movement
+            // 3. Must have realistic keystroke timing variation
+            
+            const hasRealisticTiming = timeTaken >= 1500;
+            const hasMouseMovement = mouseMovements.length >= 3;
+            
+            // Check keystroke timing variance (humans have irregular timing)
+            let keystrokeVariance = 0;
+            if (keystrokes.length > 2) {
+                const intervals = [];
+                for (let i = 1; i < keystrokes.length; i++) {
+                    intervals.push(keystrokes[i].time - keystrokes[i-1].time);
+                }
+                const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+                keystrokeVariance = intervals.reduce((sum, interval) => 
+                    sum + Math.pow(interval - avgInterval, 2), 0) / intervals.length;
+            }
+            const hasNaturalTyping = keystrokeVariance > 100 || keystrokes.length < 3;
+            
+            // Check for unnatural mouse movement patterns (bots move in straight lines)
+            let hasNaturalMouseMovement = true;
+            if (mouseMovements.length >= 5) {
+                // Check if movements are too linear (bot-like)
+                let perfectlyVertical = 0;
+                let perfectlyHorizontal = 0;
+                let totalMoves = 0;
+                
+                for (let i = 1; i < mouseMovements.length; i++) {
+                    const dx = Math.abs(mouseMovements[i].x - mouseMovements[i-1].x);
+                    const dy = Math.abs(mouseMovements[i].y - mouseMovements[i-1].y);
+                    
+                    if (dx > 0 || dy > 0) {
+                        totalMoves++;
+                        // Check if movement is suspiciously straight
+                        if (dx < 2 && dy > 5) perfectlyVertical++;
+                        if (dy < 2 && dx > 5) perfectlyHorizontal++;
+                    }
+                }
+                
+                // If more than 70% of movements are perfectly straight, likely a bot
+                const straightRatio = (perfectlyVertical + perfectlyHorizontal) / totalMoves;
+                hasNaturalMouseMovement = straightRatio < 0.7;
+            }
+            
+            if (hasRealisticTiming && hasMouseMovement && hasNaturalTyping && hasNaturalMouseMovement) {
+                botPreventionPassed = true;
+                feedback.textContent = '✓ Verified!';
+                feedback.className = 'mt-2 text-xs font-medium min-h-[1.25rem] text-green-600';
+                captchaInput.disabled = true;
+                captchaInput.className = 'w-full px-3 py-2 border border-green-500 bg-green-50 dark:bg-green-900 dark:text-white rounded-lg text-center font-mono';
+                updateSubmitButton();
+            } else {
+                // Failed validation - seems bot-like
+                feedback.textContent = '✗ Please try again naturally';
+                feedback.className = 'mt-2 text-xs font-medium min-h-[1.25rem] text-red-600';
+                captchaInput.value = '';
+                setTimeout(() => {
+                    currentCaptchaText = generateCaptchaText();
+                    obfuscateCaptchaDisplay(currentCaptchaText);
+                    captchaStartTime = Date.now();
+                    mouseMovements = [];
+                    keystrokes = [];
+                    feedback.textContent = '';
+                }, 2000);
+            }
+        } else if (userInput.length >= currentCaptchaText.length) {
+            // Wrong answer
+            feedback.textContent = '✗ Incorrect, try again';
+            feedback.className = 'mt-2 text-xs font-medium min-h-[1.25rem] text-red-600';
+            captchaInput.value = '';
+            setTimeout(() => {
+                currentCaptchaText = generateCaptchaText();
+                obfuscateCaptchaDisplay(currentCaptchaText);
+                captchaStartTime = Date.now();
+                mouseMovements = [];
+                keystrokes = [];
+                feedback.textContent = '';
+            }, 1500);
+        } else {
+            feedback.textContent = '';
+        }
+    }
+    
+    // Initialize on page load
+    initBotPrevention();
 
     // Function to update submit button state
     function updateSubmitButton() {
@@ -724,8 +1146,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isGplVisible = !gplConfirmContainer.classList.contains('hidden');
         const checkboxValid = !isGplVisible || gplCheckbox.checked;
         
-        // Checkbox (if visible) AND captcha must be valid
-        if (checkboxValid && captchaToken) {
+        // Checkbox (if visible) AND bot prevention must be passed
+        if (checkboxValid && botPreventionPassed) {
             submitBtn.disabled = false;
             submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
         } else {
@@ -739,25 +1161,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gplCheckbox.addEventListener('change', updateSubmitButton);
     }
 
-    // hCaptcha callbacks
-    window.onCaptchaSuccess = function(token) {
-        captchaToken = token;
-        console.log('hCaptcha verified successfully');
-        updateSubmitButton();
-    };
-
-    window.onCaptchaExpired = function() {
-        captchaToken = null;
-        console.log('hCaptcha expired');
-        updateSubmitButton();
-    };
-
-    window.onCaptchaError = function(error) {
-        captchaToken = null;
-        console.error('hCaptcha error:', error);
-        updateSubmitButton();
-    };
-
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
@@ -766,9 +1169,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const messageDiv = document.getElementById('form-message');
             const originalBtnText = submitBtn.innerHTML;
             
-            // Verify hCaptcha
-            if (!captchaToken) {
-                messageDiv.textContent = '✗ Please complete the captcha verification.';
+            // Verify bot prevention
+            if (!botPreventionPassed) {
+                messageDiv.textContent = '✗ Please complete the verification.';
                 messageDiv.className = 'text-center text-sm text-red-600 font-medium';
                 messageDiv.classList.remove('hidden');
                 
@@ -807,8 +1210,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     gplCheckbox.checked = false;
                     gplConfirmContainer.classList.add('hidden');
                     gplCheckbox.removeAttribute('required');
-                    captchaToken = null;
-                    if (window.hcaptcha) hcaptcha.reset();
+                    
+                    // Reset bot prevention
+                    botPreventionPassed = false;
+                    document.getElementById('captcha-input').disabled = false;
+                    document.getElementById('captcha-input').className = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent text-center font-mono';
+                    document.getElementById('captcha-feedback').textContent = '';
+                    initBotPrevention();
+                    
                     submitBtn.disabled = true;
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.className = 'w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-medium transition-colors cursor-not-allowed';
@@ -823,9 +1232,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     messageDiv.className = 'text-center text-sm text-red-600 font-medium';
                     messageDiv.classList.remove('hidden');
                     
-                    // Reset captcha and re-enable submit button
-                    captchaToken = null;
-                    if (window.hcaptcha) hcaptcha.reset();
+                    // Reset bot prevention and re-enable submit button
+                    botPreventionPassed = false;
+                    document.getElementById('captcha-input').disabled = false;
+                    document.getElementById('captcha-input').className = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent text-center font-mono';
+                    document.getElementById('captcha-feedback').textContent = '';
+                    initBotPrevention();
+                    
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';

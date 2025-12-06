@@ -34,9 +34,6 @@
     <!-- EmailJS for client-side email sending -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     
-    <!-- hCaptcha for bot prevention -->
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-    
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script>
         // SPDX-License-Identifier: GPL-3.0-or-later
@@ -434,9 +431,26 @@
                             </select>
                         </div>
 
-                        <!-- hCaptcha -->
-                        <div class="flex justify-center">
-                            <div class="h-captcha" data-sitekey="ef6a647c-2404-4418-ae6e-8b02691c9bf0" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired" data-error-callback="onCaptchaError"></div>
+                        <!-- Custom Bot Prevention -->
+                        <div id="bot-prevention-widget" class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border-2 border-gray-300 dark:border-gray-600">
+                            <div class="text-center mb-3">
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Verify you're human</p>
+                                <div class="bg-white dark:bg-gray-800 rounded px-4 py-3 mb-3 border border-gray-300 dark:border-gray-600 relative overflow-hidden">
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Type the text below (case sensitive):</p>
+                                    <div id="captcha-text" class="font-mono text-2xl font-bold text-gray-800 dark:text-gray-200 select-none min-h-[60px] flex items-center justify-center relative" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; filter: contrast(0.85) blur(0.4px) brightness(0.95);"></div>
+                                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(128,128,128,0.04) 3px, rgba(128,128,128,0.04) 6px), repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(128,128,128,0.03) 3px, rgba(128,128,128,0.03) 6px);"></div>
+                                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; background: radial-gradient(circle at 30% 40%, rgba(200,200,200,0.1) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(150,150,150,0.08) 0%, transparent 50%);"></div>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="captcha-input" 
+                                    autocomplete="off" 
+                                    spellcheck="false"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent text-center font-mono"
+                                    placeholder="Type here..."
+                                />
+                                <div id="captcha-feedback" class="mt-2 text-xs font-medium min-h-[1.25rem]"></div>
+                            </div>
                         </div>
 
                         <!-- Submit Button -->
