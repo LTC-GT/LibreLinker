@@ -1102,12 +1102,43 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isExactMatch || isCloseMatch) {
             // Validate human behavior:
             // 1. Must take at least 1.5 seconds (humans can't type instantly)
-            // 2. Must have some mouse movement
-            // 3. Must have realistic keystroke timing variation
+            // 2. Must have some mouse movement (desktop only)
+            // 3. Must have realistic keystroke timing variation (desktop only)
             
             const hasRealisticTiming = timeTaken >= 1200; // slightly relaxed for mobile
-            // On mobile, skip mouse movement requirement
-            const hasMouseMovement = isMobile ? true : (mouseMovements.length >= 3);
+            
+            // On mobile, skip behavioral checks entirely - just verify timing
+            if (isMobile) {
+                if (hasRealisticTiming) {
+                    botPreventionPassed = true;
+                    feedback.textContent = '✓ Verified!';
+                    feedback.className = 'mt-2 text-xs font-medium min-h-[1.25rem] text-green-600';
+                    captchaInput.disabled = true;
+                    captchaInput.className = 'w-full px-3 py-2 border border-green-500 bg-green-50 dark:bg-green-900 dark:text-white rounded-lg text-center font-mono';
+                    if (refreshBtn) {
+                        refreshBtn.classList.add('hidden');
+                    }
+                    updateSubmitButton();
+                    return;
+                } else {
+                    // Failed timing validation on mobile
+                    feedback.textContent = '✗ Please try again';
+                    feedback.className = 'mt-2 text-xs font-medium min-h-[1.25rem] text-red-600';
+                    captchaInput.value = '';
+                    setTimeout(() => {
+                        currentCaptchaText = generateCaptchaText();
+                        obfuscateCaptchaDisplay(currentCaptchaText);
+                        captchaStartTime = Date.now();
+                        mouseMovements = [];
+                        keystrokes = [];
+                        feedback.textContent = '';
+                    }, 2000);
+                    return;
+                }
+            }
+            
+            // Desktop validation (original logic)
+            const hasMouseMovement = mouseMovements.length >= 3;
             
             // Check keystroke timing variance (humans have irregular timing)
             let keystrokeVariance = 0;
@@ -1120,12 +1151,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 keystrokeVariance = intervals.reduce((sum, interval) => 
                     sum + Math.pow(interval - avgInterval, 2), 0) / intervals.length;
             }
-            // Mobile keyboards often batch input; relax variance requirement on mobile
-            const hasNaturalTyping = isMobile ? (keystrokes.length >= 1) : (keystrokeVariance > 100 || keystrokes.length < 3);
+            const hasNaturalTyping = keystrokeVariance > 100 || keystrokes.length < 3;
             
             // Check for unnatural mouse movement patterns (bots move in straight lines)
             let hasNaturalMouseMovement = true;
-            if (!isMobile && mouseMovements.length >= 5) {
+            if (mouseMovements.length >= 5) {
                 // Check if movements are too linear (bot-like)
                 let perfectlyVertical = 0;
                 let perfectlyHorizontal = 0;
