@@ -1088,6 +1088,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!captchaInput || !feedback) return;
         
+        // Detect mobile (touch devices) where mouse movement isn't applicable
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isMobile = /iPad|iPhone|iPod|Android/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
         const userInput = captchaInput.value;
         const timeTaken = Date.now() - captchaStartTime;
         
@@ -1101,8 +1105,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Must have some mouse movement
             // 3. Must have realistic keystroke timing variation
             
-            const hasRealisticTiming = timeTaken >= 1500;
-            const hasMouseMovement = mouseMovements.length >= 3;
+            const hasRealisticTiming = timeTaken >= 1200; // slightly relaxed for mobile
+            // On mobile, skip mouse movement requirement
+            const hasMouseMovement = isMobile ? true : (mouseMovements.length >= 3);
             
             // Check keystroke timing variance (humans have irregular timing)
             let keystrokeVariance = 0;
@@ -1115,11 +1120,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 keystrokeVariance = intervals.reduce((sum, interval) => 
                     sum + Math.pow(interval - avgInterval, 2), 0) / intervals.length;
             }
-            const hasNaturalTyping = keystrokeVariance > 100 || keystrokes.length < 3;
+            // Mobile keyboards often batch input; relax variance requirement on mobile
+            const hasNaturalTyping = isMobile ? (keystrokes.length >= 1) : (keystrokeVariance > 100 || keystrokes.length < 3);
             
             // Check for unnatural mouse movement patterns (bots move in straight lines)
             let hasNaturalMouseMovement = true;
-            if (mouseMovements.length >= 5) {
+            if (!isMobile && mouseMovements.length >= 5) {
                 // Check if movements are too linear (bot-like)
                 let perfectlyVertical = 0;
                 let perfectlyHorizontal = 0;
