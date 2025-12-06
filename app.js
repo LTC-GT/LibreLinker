@@ -1192,6 +1192,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize on page load
     initBotPrevention();
 
+    // Mobile-specific: defensively disable autocorrect/capitalization at runtime
+    (function() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        const isMobile = /iPad|iPhone|iPod|Android/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        if (!isMobile) return;
+        const ci = document.getElementById('captcha-input');
+        if (ci) {
+            ci.setAttribute('autocapitalize', 'off');
+            ci.setAttribute('autocorrect', 'off');
+            ci.setAttribute('autocomplete', 'off');
+            ci.setAttribute('inputmode', 'latin');
+        }
+    })();
+
     // Function to update submit button state
     function updateSubmitButton() {
         if (!submitBtn || !gplConfirmContainer || !gplCheckbox) return;
