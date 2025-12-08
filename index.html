@@ -27,15 +27,25 @@
     <meta name="keywords" content="free & open-source, Georgia Tech, AI, research, hardware, projects, portfolio">
     <meta name="author" content="LibreTech Collective">
     
+    <!-- LibreJS License Information -->
+    <link rel="jslicense" type="text/html" href="/javascript-licenses.html">
+    
     <!-- 100% privacy-first analytics -->
-    <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+    <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
+    <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js" data-jslicense="1"></script>
     <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+    <!-- @license-end -->
     
     <!-- EmailJS for client-side email sending -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" data-jslicense="1"></script>
+    <!-- @license-end -->
     
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-    <script>
+    <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio" data-jslicense="1"></script>
+    <!-- @license-end -->
+    <script data-jslicense="1">
+        // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
         // SPDX-License-Identifier: GPL-3.0-or-later
         tailwind.config = {
             darkMode: 'class',
@@ -48,6 +58,7 @@
                 }
             }
         }
+        // @license-end
     </script>
     <style>
         @keyframes wiggle {
@@ -78,11 +89,22 @@
             will-change: transform;
             min-width: 100%;
         }
+        
+        /* Critical CSS for layout - ensures page structure even if Tailwind is delayed */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        header, footer {
+            flex-shrink: 0 !important;
+        }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-900 h-screen flex flex-col transition-colors duration-200">
+<body class="bg-white dark:bg-gray-900 transition-colors duration-200">
     <!-- Main Application Script -->
-    <script src="app.js"></script>
+    <!-- @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later -->
+    <script src="app.js" data-jslicense="1"></script>
+    <!-- @license-end -->
 
     <!-- Header -->
     <header class="bg-brand-navy text-white shadow-lg flex-shrink-0">
@@ -126,7 +148,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-auto">
+    <main>
         <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
             <div class="text-center max-w-4xl mx-auto">
                 <h2 class="text-2xl sm:text-3xl font-bold text-brand-navy dark:text-brand-gold mb-3 sm:mb-4">Discover Free Software & Hardware Projects</h2>

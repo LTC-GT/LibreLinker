@@ -2,3 +2,8 @@ User-agent: *
 Allow: /
 
 Sitemap: https://librelinker.us/sitemap.xml
+
+# JavaScript license information
+# @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
+# For JavaScript license information, see: /javascript-licenses.html
+# @license-end
