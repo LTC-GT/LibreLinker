@@ -489,7 +489,7 @@ class LibreLinker {
                         <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="flex-shrink-0" aria-label="Open ${project.name}">
                             <div class="w-8 h-8 sm:w-12 sm:h-12 rounded ${project.logo ? 'bg-gray-100 dark:bg-white border-2 border-brand-gold' : 'bg-gradient-to-br from-brand-navy to-brand-gold dark:from-gray-700 dark:to-brand-gold'} flex items-center justify-center">
                                 ${project.logo 
-                                    ? `<img src="${project.logo}" alt="${project.name} logo" class="w-6 h-6 sm:w-10 sm:h-10 object-contain">`
+                                    ? `<img src="${project.logo}" alt="${project.name} logo" class="w-6 h-6 sm:w-10 sm:h-10 object-contain" loading="lazy" width="40" height="40">`
                                     : `<span class="text-white font-bold text-sm sm:text-xl">${project.name.substring(0, 2).toUpperCase()}</span>`
                                 }
                             </div>

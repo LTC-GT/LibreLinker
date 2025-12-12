@@ -27,18 +27,28 @@
     <meta name="keywords" content="free & open-source, Georgia Tech, AI, research, hardware, projects, portfolio">
     <meta name="author" content="LibreTech Collective">
     
+    <!-- Preconnect to critical origins -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://scripts.simpleanalyticscdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://queue.simpleanalyticscdn.com">
+    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="projects.json" as="fetch" crossorigin>
+    
     <!-- LibreJS License Information -->
     <link rel="jslicense" type="text/html" href="/javascript-licenses.html">
     
     <!-- 100% privacy-first analytics -->
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
     <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js" data-jslicense="1"></script>
-    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" width="1" height="1" referrerpolicy="no-referrer-when-downgrade"/></noscript>
     <!-- @license-end -->
     
     <!-- EmailJS for client-side email sending -->
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" data-jslicense="1"></script>
+    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" data-jslicense="1"></script>
     <!-- @license-end -->
     
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
@@ -52,7 +62,7 @@
             theme: {
                 extend: {
                     colors: {
-                        'brand-gold': '#B3A369',
+                        'brand-gold': '#9C8547',
                         'brand-navy': '#003057',
                     }
                 }
@@ -94,16 +104,42 @@
         body {
             margin: 0 !important;
             padding: 0 !important;
+            font-family: system-ui, -apple-system, sans-serif;
         }
         header, footer {
             flex-shrink: 0 !important;
+        }
+        
+        /* Critical styles for LCP element */
+        main > div:first-child {
+            contain: layout style paint;
+        }
+        
+        /* Improve rendering performance */
+        .container {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Reduce layout shift */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* Optimize animations */
+        .transition-colors,
+        .hover\\:bg-opacity-90,
+        .hover\\:text-brand-gold {
+            will-change: auto;
         }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-200">
     <!-- Main Application Script -->
     <!-- @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later -->
-    <script src="app.js" data-jslicense="1"></script>
+    <script defer src="app.js" data-jslicense="1"></script>
     <!-- @license-end -->
 
     <!-- Header -->
@@ -111,7 +147,7 @@
         <div class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <img src="misc/img/GTLTC_LOGO_SOLO.webp" alt="LibreLinker Logo" class="h-8 sm:h-12 w-auto wiggle-on-hover">
+                    <img src="misc/img/GTLTC_LOGO_SOLO.webp" alt="LibreLinker Logo" class="h-8 sm:h-12 w-auto wiggle-on-hover" width="649" height="912" loading="eager">
                     <div>
                         <h1 class="text-lg sm:text-2xl font-bold">LibreLinker</h1>
                         <p class="text-brand-gold text-xs hidden sm:block">Connecting Ideas, Building Tomorrow, Fighting for Freedom</p>
@@ -512,7 +548,7 @@
         <div class="container mx-auto px-4 sm:px-6 py-2">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
                 <p class="text-[10px] sm:text-xs text-gray-300 flex items-center gap-1">
-                    <a href="https://github.com/LTC-GT/LibreLinker/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline"><span style="display:inline-block;transform:scaleX(-1)">©</span> LibreLinker — GNU GPL v3, Free As In Freedom</a> • Built with ❤️ in Atlanta, Georgia <a href="https://gatech.edu" target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity" aria-label="Visit Georgia Tech"><img class="inline-block h-5 w-auto align-middle" src="misc/img/us-flag.svg" alt="US Flag"></a> by <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">LibreTech Collective @ Georgia Tech</a>
+                    <a href="https://github.com/LTC-GT/LibreLinker/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline"><span style="display:inline-block;transform:scaleX(-1)">©</span> LibreLinker — GNU GPL v3, Free As In Freedom</a> • Built with ❤️ in Atlanta, Georgia <a href="https://gatech.edu" target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity" aria-label="Visit Georgia Tech"><img class="inline-block h-5 w-auto align-middle" src="misc/img/us-flag.svg" alt="US Flag" width="20" height="15" loading="lazy"></a> by <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">LibreTech Collective @ Georgia Tech</a>
                 </p>
                 <div class="flex items-center gap-3 pr-2">
                     <a href="https://github.com/LTC-GT" target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity" aria-label="View on GitHub">
