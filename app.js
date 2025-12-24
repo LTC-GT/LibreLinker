@@ -694,8 +694,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elements
     const reasonSelect = document.getElementById('reason');
-    const gplConfirmContainer = document.getElementById('gpl-confirm-container');
-    const gplCheckbox = document.getElementById('gpl-confirm');
+    const gplConfirmContainer = document.getElementById('gpl_confirm_container');
+    const gplCheckbox = document.getElementById('gpl_confirm');
     const submitBtn = document.getElementById('submit-btn');
     const gplHelpBtn = document.getElementById('gpl-help-btn');
     const gplTooltip = document.getElementById('gpl-tooltip');
@@ -1297,10 +1297,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const isGplVisible = !gplConfirmContainer.classList.contains('hidden');
             const templateParams = {
                 reason: document.getElementById('reason').value,
-                user_email: document.getElementById('user-email').value,
+                user_name: document.getElementById('user_name').value,
+                user_email: document.getElementById('user_email').value,
                 message: document.getElementById('message').value,
                 gpl_confirm: isGplVisible && gplCheckbox.checked ? true : null,
-                gt_affiliation: document.getElementById('gt-affiliation').value,
+                gt_affiliation: document.getElementById('gt_affiliation').value,
                 to_email: 'librelinker@gtltc.org'
             };
             
