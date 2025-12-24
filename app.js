@@ -48,6 +48,9 @@ class LibreLinker {
         this.initialDistance = 0;
         this.initialScale = 1;
         
+        // Detect touch device
+        this.isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        
         this.init();
     }
 
@@ -308,15 +311,35 @@ class LibreLinker {
         return descriptions[type] || 'Project type';
     }
 
-    showTooltip(event, type) {
+    showTooltip(event, type, isMobileClick = false) {
+        // On touch devices, only respond to explicit clicks, not hover
+        if (this.isTouchDevice && !isMobileClick) {
+            return;
+        }
+
         const existingTooltip = document.querySelector('.icon-tooltip');
         if (existingTooltip) {
+            // On mobile click, if same tooltip is shown, hide it
+            if (isMobileClick && existingTooltip.dataset.type === type) {
+                if (existingTooltip._scrollHandler) {
+                    window.removeEventListener('scroll', existingTooltip._scrollHandler);
+                    document.querySelector('.overflow-x-auto')?.removeEventListener('scroll', existingTooltip._scrollHandler);
+                }
+                existingTooltip.remove();
+                return;
+            }
+            if (existingTooltip._scrollHandler) {
+                window.removeEventListener('scroll', existingTooltip._scrollHandler);
+                document.querySelector('.overflow-x-auto')?.removeEventListener('scroll', existingTooltip._scrollHandler);
+            }
             existingTooltip.remove();
         }
 
         const tooltip = document.createElement('div');
         tooltip.className = 'icon-tooltip';
         tooltip.textContent = this.getTypeDescription(type);
+        tooltip.dataset.type = type;
+        tooltip.dataset.isMobile = isMobileClick;
         
         const rect = event.currentTarget.getBoundingClientRect();
         tooltip.style.cssText = `
@@ -331,7 +354,7 @@ class LibreLinker {
             font-size: 12px;
             white-space: nowrap;
             z-index: 1000;
-            pointer-events: none;
+            pointer-events: ${isMobileClick ? 'auto' : 'none'};
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         `;
 
@@ -350,11 +373,33 @@ class LibreLinker {
         tooltip.appendChild(arrow);
 
         document.body.appendChild(tooltip);
+
+        // Update position as user scrolls (for both mobile and desktop)
+        const iconElement = event.currentTarget;
+        const updatePosition = () => {
+            const currentRect = iconElement.getBoundingClientRect();
+            tooltip.style.left = `${currentRect.left + currentRect.width / 2}px`;
+            tooltip.style.top = `${currentRect.top - 40}px`;
+        };
+        
+        // Store scroll handler for cleanup
+        tooltip._scrollHandler = updatePosition;
+        window.addEventListener('scroll', updatePosition, { passive: true });
+        document.querySelector('.overflow-x-auto')?.addEventListener('scroll', updatePosition, { passive: true });
     }
 
     hideTooltip() {
         const tooltip = document.querySelector('.icon-tooltip');
         if (tooltip) {
+            // Don't hide on desktop hover-out if it's a mobile-clicked tooltip
+            if (tooltip.dataset.isMobile === 'true') {
+                return;
+            }
+            // Clean up scroll listeners
+            if (tooltip._scrollHandler) {
+                window.removeEventListener('scroll', tooltip._scrollHandler);
+                document.querySelector('.overflow-x-auto')?.removeEventListener('scroll', tooltip._scrollHandler);
+            }
             tooltip.remove();
         }
     }
@@ -511,6 +556,7 @@ class LibreLinker {
                     <div class="flex gap-1 sm:gap-2 flex-wrap">
                         ${project.types.map(type => `
                             <span class="text-brand-navy dark:text-brand-gold hover:scale-110 transition-transform cursor-help" 
+                                  onclick="window.libreLinker.showTooltip(event, '${type}', true)"
                                   onmouseenter="window.libreLinker.showTooltip(event, '${type}')"
                                   onmouseleave="window.libreLinker.hideTooltip()">
                                 ${this.getProjectIcon(type)}
@@ -574,6 +620,22 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && window.libreLinker) {
             window.libreLinker.closeDescriptionPopup();
+        }
+    });
+
+    // Close mobile tooltip when clicking outside
+    document.addEventListener('click', (e) => {
+        const tooltip = document.querySelector('.icon-tooltip');
+        if (tooltip && tooltip.dataset.isMobile === 'true') {
+            // Check if click is outside both the tooltip and any type icon
+            const isTypeIcon = e.target.closest('[onclick*="showTooltip"]');
+            if (!tooltip.contains(e.target) && !isTypeIcon) {
+                if (tooltip._scrollHandler) {
+                    window.removeEventListener('scroll', tooltip._scrollHandler);
+                    document.querySelector('.overflow-x-auto')?.removeEventListener('scroll', tooltip._scrollHandler);
+                }
+                tooltip.remove();
+            }
         }
     });
 
