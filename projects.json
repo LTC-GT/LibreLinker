@@ -202,5 +202,29 @@
         "logo": "misc/logos/cas-logo.webp",
         "url": "https://www.apereo.org/programs/software/cas",
         "ltcStarted": false
+    },
+        {
+        "name": "Tamagotchi.nvim",
+        "description": "Tamagotchi.nvim brings virtual pets to Neovim that react as you work, adding lightweight motivation and a bit of fun to the editor.",
+        "types": ["just-for-fun", "plugin"],
+        "technologies": ["Neovim", "Lua", "Virtual Pets", "Gamification", "Editor Plugin"],
+        "license": "MIT",
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/raquentin/tamagotchi.nvim",
+        "ltcStarted": true
+    },
+        {
+        "name": "Punt Engine",
+        "description": "Punt Engine is a collection of open software and FPGA gateware modules designed to support low-latency, high-frequency trading systems.",
+        "types": ["web", "hardware"],
+        "technologies": ["FPGA", "Hardware Design", "Low-Latency Trading", "Gateware", "Trading Systems"],
+        "license": "GPL-3.0",
+        "yearStarted": 2024,
+        "status": "Active",
+        "logo": null,
+        "url": "https://punt-engine.com/",
+        "ltcStarted": true
     }
 ]

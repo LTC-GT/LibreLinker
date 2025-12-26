@@ -42,6 +42,7 @@ class LibreLinker {
         this.sortState = [];
         this.hasUserSorted = false;
         this.activeFilters = new Set();
+        this.ltcOnTop = true;
         
         // Pinch-to-zoom properties
         this.scale = 1;
@@ -65,9 +66,18 @@ class LibreLinker {
     async loadProjects() {
         try {
             const response = await fetch('projects.json');
-            this.projects = await response.json();
-            // Randomize project order
-            this.projects.sort(() => Math.random() - 0.5);
+            const allProjects = await response.json();
+            
+            // Separate LTC and non-LTC projects
+            const ltcProjects = allProjects.filter(p => p.ltcStarted === true);
+            const nonLtcProjects = allProjects.filter(p => p.ltcStarted !== true);
+            
+            // Randomize each group independently
+            ltcProjects.sort(() => Math.random() - 0.5);
+            nonLtcProjects.sort(() => Math.random() - 0.5);
+            
+            // LTC projects on top by default
+            this.projects = [...ltcProjects, ...nonLtcProjects];
         } catch (error) {
             console.error('Error loading projects:', error);
             this.projects = [];
@@ -79,7 +89,15 @@ class LibreLinker {
         headers.forEach(header => {
             header.addEventListener('click', () => {
                 const column = header.getAttribute('data-sort');
-                // Find existing entry
+                
+                // Special handling for ltcStarted column - just toggle position
+                if (column === 'ltcStarted') {
+                    this.ltcOnTop = !this.ltcOnTop;
+                    this.render();
+                    return;
+                }
+                
+                // Regular multi-column sort for other columns
                 const idx = this.sortState.findIndex(s => s.column === column);
                 if (idx === -1) {
                     // Add as ascending
@@ -212,10 +230,22 @@ class LibreLinker {
         headers.forEach(header => {
             const icon = header.querySelector('.sort-icon');
             const column = header.getAttribute('data-sort');
-            const state = this.sortState.find(s => s.column === column);
             if (!icon) return;
+            
+            // Special handling for ltcStarted column
+            if (column === 'ltcStarted') {
+                if (this.ltcOnTop) {
+                    icon.innerHTML = '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3z"/></svg>';
+                } else {
+                    icon.innerHTML = '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 15l-3-3h6l-3 3z"/></svg>';
+                }
+                icon.classList.remove('opacity-30');
+                return;
+            }
+            
+            // Regular sort indicators for other columns
+            const state = this.sortState.find(s => s.column === column);
             if (state) {
-                // Render up/down SVG
                 icon.innerHTML = state.direction === 'asc'
                     ? '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3z"/></svg>'
                     : '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 15l-3-3h6l-3 3z"/></svg>';
@@ -230,43 +260,56 @@ class LibreLinker {
 
     sortProjects() {
         const filteredProjects = this.getFilteredProjects();
-        if (!this.hasUserSorted || this.sortState.length === 0) {
-            return filteredProjects;
+        
+        // Separate LTC and non-LTC projects
+        let ltcProjects = filteredProjects.filter(p => p.ltcStarted === true);
+        let nonLtcProjects = filteredProjects.filter(p => p.ltcStarted !== true);
+        
+        // Apply sorting to each group independently if user has sorted
+        if (this.hasUserSorted && this.sortState.length > 0) {
+            const sortFn = (a, b) => {
+                for (const { column, direction } of this.sortState) {
+                    let aVal = a[column];
+                    let bVal = b[column];
+
+                    // Special handling for license arrays
+                    if (column === 'license') {
+                        aVal = Array.isArray(aVal) ? aVal[0] : aVal;
+                        bVal = Array.isArray(bVal) ? bVal[0] : bVal;
+                    }
+
+                    // Normalize values
+                    const aIsString = typeof aVal === 'string';
+                    const bIsString = typeof bVal === 'string';
+                    if (aIsString) aVal = aVal.toLowerCase();
+                    if (bIsString) bVal = bVal.toLowerCase();
+
+                    let cmp = 0;
+                    if (aIsString && bIsString) {
+                        cmp = aVal.localeCompare(bVal);
+                    } else {
+                        if (aVal > bVal) cmp = 1;
+                        else if (aVal < bVal) cmp = -1;
+                        else cmp = 0;
+                    }
+
+                    if (cmp !== 0) {
+                        return direction === 'asc' ? cmp : -cmp;
+                    }
+                }
+                return 0;
+            };
+            
+            ltcProjects = [...ltcProjects].sort(sortFn);
+            nonLtcProjects = [...nonLtcProjects].sort(sortFn);
         }
-
-        const sorted = [...filteredProjects].sort((a, b) => {
-            for (const { column, direction } of this.sortState) {
-                let aVal = a[column];
-                let bVal = b[column];
-
-                // Special handling for license arrays
-                if (column === 'license') {
-                    aVal = Array.isArray(aVal) ? aVal[0] : aVal;
-                    bVal = Array.isArray(bVal) ? bVal[0] : bVal;
-                }
-
-                // Normalize values
-                const aIsString = typeof aVal === 'string';
-                const bIsString = typeof bVal === 'string';
-                if (aIsString) aVal = aVal.toLowerCase();
-                if (bIsString) bVal = bVal.toLowerCase();
-
-                let cmp = 0;
-                if (aIsString && bIsString) {
-                    cmp = aVal.localeCompare(bVal);
-                } else {
-                    if (aVal > bVal) cmp = 1;
-                    else if (aVal < bVal) cmp = -1;
-                    else cmp = 0;
-                }
-
-                if (cmp !== 0) {
-                    return direction === 'asc' ? cmp : -cmp;
-                }
-            }
-            return 0;
-        });
-        return sorted;
+        
+        // Return with LTC on top or bottom based on ltcOnTop state
+        if (this.ltcOnTop) {
+            return [...ltcProjects, ...nonLtcProjects];
+        } else {
+            return [...nonLtcProjects, ...ltcProjects];
+        }
     }
 
     getProjectIcon(type) {
@@ -293,6 +336,12 @@ class LibreLinker {
             </svg>`,
             'enterprise': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>`,
+            'plugin': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/>
+            </svg>`,
+            'just-for-fun': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>`
         };
         return icons[type] || icons['web'];
@@ -306,7 +355,9 @@ class LibreLinker {
             'hardware': 'Hardware, HPC, or low-level systems project',
             'web': 'Web application or online service',
             'mobile': 'Mobile application project',
-            'enterprise': 'Enterprise-scale or large organization project'
+            'enterprise': 'Enterprise-scale or large organization project',
+            'plugin': 'Plugin or extension for existing software',
+            'just-for-fun': 'Fun, experimental, or hobby project'
         };
         return descriptions[type] || 'Project type';
     }
@@ -610,6 +661,9 @@ class LibreLinker {
                 </td>
             </tr>
         `).join('');
+        
+        // Update sort indicators after rendering
+        this.updateSortIndicators();
     }
 }
 
@@ -761,6 +815,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const gplHelpBtn = document.getElementById('gpl-help-btn');
     const gplTooltip = document.getElementById('gpl-tooltip');
+    const ltcHelpBtn = document.getElementById('ltc-help-btn');
+    const ltcTooltip = document.getElementById('ltc-tooltip');
 
     // Handle reason selection change
     if (reasonSelect) {
@@ -792,10 +848,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // LTC help tooltip functionality
+    if (ltcHelpBtn) {
+        ltcHelpBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Toggle visibility
+            const isHidden = ltcTooltip.classList.contains('hidden');
+            
+            if (isHidden) {
+                // Show tooltip
+                ltcTooltip.classList.remove('hidden');
+                
+                // Position the tooltip above the button
+                const updatePosition = () => {
+                    const btnRect = ltcHelpBtn.getBoundingClientRect();
+                    const tooltipRect = ltcTooltip.getBoundingClientRect();
+                    
+                    // Center horizontally relative to button
+                    const left = btnRect.left + (btnRect.width / 2) - (tooltipRect.width / 2);
+                    // Position above button with some spacing
+                    const top = btnRect.top - tooltipRect.height - 8;
+                    
+                    ltcTooltip.style.left = `${Math.max(10, left)}px`;
+                    ltcTooltip.style.top = `${Math.max(10, top)}px`;
+                };
+                
+                // Initial position
+                updatePosition();
+                
+                // Store scroll handler for cleanup
+                ltcTooltip._scrollHandler = updatePosition;
+                window.addEventListener('scroll', updatePosition, { passive: true });
+                document.querySelector('.overflow-x-auto')?.addEventListener('scroll', updatePosition, { passive: true });
+            } else {
+                // Hide tooltip and remove scroll listeners
+                ltcTooltip.classList.add('hidden');
+                if (ltcTooltip._scrollHandler) {
+                    window.removeEventListener('scroll', ltcTooltip._scrollHandler);
+                    document.querySelector('.overflow-x-auto')?.removeEventListener('scroll', ltcTooltip._scrollHandler);
+                    ltcTooltip._scrollHandler = null;
+                }
+            }
+        });
+    }
+
     // Close tooltip when clicking outside
     document.addEventListener('click', function(e) {
         if (gplHelpBtn && !gplHelpBtn.contains(e.target) && gplTooltip && !gplTooltip.contains(e.target)) {
             gplTooltip.classList.add('hidden');
+        }
+        if (ltcHelpBtn && !ltcHelpBtn.contains(e.target) && ltcTooltip && !ltcTooltip.contains(e.target)) {
+            ltcTooltip.classList.add('hidden');
+            // Clean up scroll listeners
+            if (ltcTooltip._scrollHandler) {
+                window.removeEventListener('scroll', ltcTooltip._scrollHandler);
+                document.querySelector('.overflow-x-auto')?.removeEventListener('scroll', ltcTooltip._scrollHandler);
+                ltcTooltip._scrollHandler = null;
+            }
         }
     });
 
