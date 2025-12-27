@@ -867,12 +867,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     const tooltipRect = ltcTooltip.getBoundingClientRect();
                     
                     // Center horizontally relative to button
-                    const left = btnRect.left + (btnRect.width / 2) - (tooltipRect.width / 2);
+                    let left = btnRect.left + (btnRect.width / 2) - (tooltipRect.width / 2);
                     // Position above button with some spacing
-                    const top = btnRect.top - tooltipRect.height - 8;
+                    let top = btnRect.top - tooltipRect.height - 8;
                     
-                    ltcTooltip.style.left = `${Math.max(10, left)}px`;
-                    ltcTooltip.style.top = `${Math.max(10, top)}px`;
+                    // Ensure tooltip stays within viewport horizontally
+                    const viewportWidth = window.innerWidth;
+                    const rightEdge = left + tooltipRect.width;
+                    
+                    if (rightEdge > viewportWidth - 10) {
+                        // Tooltip would go off right edge, align to right side with padding
+                        left = viewportWidth - tooltipRect.width - 10;
+                    }
+                    if (left < 10) {
+                        // Tooltip would go off left edge, align to left side with padding
+                        left = 10;
+                    }
+                    
+                    // Ensure tooltip stays within viewport vertically
+                    if (top < 10) {
+                        top = 10;
+                    }
+                    
+                    ltcTooltip.style.left = `${left}px`;
+                    ltcTooltip.style.top = `${top}px`;
                 };
                 
                 // Initial position

@@ -218,7 +218,7 @@
         {
         "name": "Punt Engine",
         "description": "Punt Engine is a collection of open software and FPGA gateware modules designed to support low-latency, high-frequency trading systems.",
-        "types": ["web", "hardware"],
+        "types": ["web", "hardware", "research"],
         "technologies": ["FPGA", "Hardware Design", "Low-Latency Trading", "Gateware", "Trading Systems"],
         "license": "GPL-3.0",
         "yearStarted": 2024,
