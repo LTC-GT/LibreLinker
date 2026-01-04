@@ -237,6 +237,6 @@
         "status": "Active",
         "logo": null,
         "url": "https://github.com/optimalcharb/pdf-entity-labeling",
-        "ltcSupported": false
+        "ltcSupported": true
     }
 ]
