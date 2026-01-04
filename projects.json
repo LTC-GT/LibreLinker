@@ -9,7 +9,7 @@
         "status": "Active",
         "logo": null,
         "url": "https://hpcgarage.github.io/spatter/",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "MFC",
@@ -21,7 +21,7 @@
         "status": "Active",
         "logo": "misc/logos/MFC-logo.webp",
         "url": "https://mflowcode.github.io",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "QCManyBody",
@@ -33,7 +33,7 @@
         "status": "Active",
         "logo": "misc/logos/QCMB-logo.webp",
         "url": "https://github.com/MolSSI/QCManyBody",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "Vortex",
@@ -45,7 +45,7 @@
         "status": "Active",
         "logo": "misc/logos/vortex-logo.webp",
         "url": "https://vortex.cc.gatech.edu/",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "CuPBoP",
@@ -57,7 +57,7 @@
         "status": "Dormant",
         "logo": null,
         "url": "https://github.com/cupbop/CuPBoP",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "Apache Airavata",
@@ -69,7 +69,7 @@
         "status": "Active",
         "logo": "misc/logos/airavata-logo.webp",
         "url": "https://airavata.apache.org/",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "SLOSH-ML",
@@ -81,7 +81,7 @@
         "status": "Dormant",
         "logo": null,
         "url": "https://github.com/LGST-LAB/slosh_ml",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "HLSFactory",
@@ -93,7 +93,7 @@
         "status": "Active",
         "logo": "misc/logos/hlsfactory-logo.webp",
         "url": "https://sharc-lab.github.io/HLSFactory/docs/",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "LightningSim",
@@ -105,7 +105,7 @@
         "status": "Active",
         "logo": "misc/logos/lightningsim-logo.webp",
         "url": "https://github.com/sharc-lab/LightningSim",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "Fijjiontrack",
@@ -117,7 +117,7 @@
         "status": "Dormant",
         "logo": null,
         "url": "https://github.com/gatechtonics/fijjiontrack",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "Qwerty",
@@ -129,7 +129,7 @@
         "status": "Active",
         "logo": null,
         "url": "https://github.com/gt-tinker/qwerty",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "GTSAM",
@@ -141,7 +141,7 @@
         "status": "Active",
         "logo": null,
         "url": "https://gtsam.org/",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "AI Fundamentals",
@@ -153,7 +153,7 @@
         "status": "Active",
         "logo": "misc/logos/AF-logo.webp",
         "url": "https://github.com/Fedele-AI/AI_Fundamentals",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "ML Visualizer",
@@ -165,7 +165,7 @@
         "status": "Active",
         "logo": null,
         "url": "https://mlvisualizer.org",
-        "ltcStarted": false
+        "ltcSupported": false
     },
     {
         "name": "TrustGraph",
@@ -177,7 +177,7 @@
         "status": "Active",
         "logo": "misc/logos/TG-logo.webp",
         "url": "https://trustgraph.ai/",
-        "ltcStarted": false
+        "ltcSupported": true
     },
     {
         "name": "Sakai",
@@ -189,7 +189,7 @@
         "status": "Active",
         "logo": "misc/logos/sakai-logo.webp",
         "url": "https://www.apereo.org/programs/software/sakai-lms",
-        "ltcStarted": false
+        "ltcSupported": true
     },
     {
         "name": "CAS",
@@ -201,7 +201,7 @@
         "status": "Active",
         "logo": "misc/logos/cas-logo.webp",
         "url": "https://www.apereo.org/programs/software/cas",
-        "ltcStarted": false
+        "ltcSupported": true
     },
         {
         "name": "Tamagotchi.nvim",
@@ -213,7 +213,7 @@
         "status": "Active",
         "logo": null,
         "url": "https://github.com/raquentin/tamagotchi.nvim",
-        "ltcStarted": true
+        "ltcSupported": true
     },
         {
         "name": "Punt Engine",
@@ -225,6 +225,18 @@
         "status": "Active",
         "logo": null,
         "url": "https://punt-engine.com/",
-        "ltcStarted": true
+        "ltcSupported": true
+    },
+        {
+        "name": "PDF Entity Labeling",
+        "description": "Building a UI to guide Python AI workflow development.",
+        "types": ["web", "ai"],
+        "technologies": ["Next.js", "React", "TypeScript", "PDF Rendering", "OCR"],
+        "license": "MIT",
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": null,
+        "url": "https://github.com/optimalcharb/pdf-entity-labeling",
+        "ltcSupported": false
     }
 ]

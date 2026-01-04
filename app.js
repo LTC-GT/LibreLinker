@@ -42,7 +42,7 @@ class LibreLinker {
         this.sortState = [];
         this.hasUserSorted = false;
         this.activeFilters = new Set();
-        this.ltcOnTop = true;
+        this.ltcOnTop = true; // null = off, true = LTC on top, false = LTC on bottom
         
         // Pinch-to-zoom properties
         this.scale = 1;
@@ -60,6 +60,12 @@ class LibreLinker {
         this.setupSortHandlers();
         this.setupFilterHandlers();
         this.setupPinchZoom();
+        
+        // If any filters are enabled on startup, disable LTC supported sort
+        if (this.activeFilters.size > 0) {
+            this.ltcOnTop = null;
+        }
+        
         this.render();
     }
 
@@ -69,8 +75,8 @@ class LibreLinker {
             const allProjects = await response.json();
             
             // Separate LTC and non-LTC projects
-            const ltcProjects = allProjects.filter(p => p.ltcStarted === true);
-            const nonLtcProjects = allProjects.filter(p => p.ltcStarted !== true);
+            const ltcProjects = allProjects.filter(p => p.ltcSupported === true);
+            const nonLtcProjects = allProjects.filter(p => p.ltcSupported !== true);
             
             // Randomize each group independently
             ltcProjects.sort(() => Math.random() - 0.5);
@@ -90,9 +96,17 @@ class LibreLinker {
             header.addEventListener('click', () => {
                 const column = header.getAttribute('data-sort');
                 
-                // Special handling for ltcStarted column - just toggle position
-                if (column === 'ltcStarted') {
-                    this.ltcOnTop = !this.ltcOnTop;
+                // Special handling for ltcSupported column - cycle through three states
+                if (column === 'ltcSupported') {
+                    // Cycle: null (off) -> true (LTC on top) -> false (LTC on bottom) -> null
+                    if (this.ltcOnTop === null) {
+                        this.ltcOnTop = true;
+                    } else if (this.ltcOnTop === true) {
+                        this.ltcOnTop = false;
+                    } else {
+                        this.ltcOnTop = null;
+                    }
+                    this.updateSortIndicators();
                     this.render();
                     return;
                 }
@@ -125,6 +139,12 @@ class LibreLinker {
     setupFilterHandlers() {
         const filterButtons = document.querySelectorAll('[data-filter-type]');
         filterButtons.forEach(button => {
+            // Check if button is already active on page load (has active styling)
+            if (button.classList.contains('bg-brand-gold') && button.classList.contains('text-white')) {
+                const type = button.getAttribute('data-filter-type');
+                this.activeFilters.add(type);
+            }
+            
             button.addEventListener('click', () => {
                 const type = button.getAttribute('data-filter-type');
                 if (this.activeFilters.has(type)) {
@@ -135,7 +155,10 @@ class LibreLinker {
                     this.activeFilters.add(type);
                     button.classList.remove('bg-gray-100', 'text-gray-700');
                     button.classList.add('bg-brand-gold', 'text-white');
+                    // Turn off LTC Supported filter when any other filter is applied
+                    this.ltcOnTop = null;
                 }
+                this.updateSortIndicators();
                 this.render();
             });
         });
@@ -232,14 +255,22 @@ class LibreLinker {
             const column = header.getAttribute('data-sort');
             if (!icon) return;
             
-            // Special handling for ltcStarted column
-            if (column === 'ltcStarted') {
-                if (this.ltcOnTop) {
+            // Special handling for ltcSupported column - three states
+            if (column === 'ltcSupported') {
+                icon.setAttribute('aria-hidden', 'true');
+                if (this.ltcOnTop === true) {
+                    // LTC on top
                     icon.innerHTML = '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3z"/></svg>';
-                } else {
+                    icon.classList.remove('opacity-30');
+                } else if (this.ltcOnTop === false) {
+                    // LTC on bottom
                     icon.innerHTML = '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 15l-3-3h6l-3 3z"/></svg>';
+                    icon.classList.remove('opacity-30');
+                } else {
+                    // Off state (null)
+                    icon.innerHTML = '<svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3zm0 14l-3-3h6l-3 3z"/></svg>';
+                    icon.classList.add('opacity-30');
                 }
-                icon.classList.remove('opacity-30');
                 return;
             }
             
@@ -261,9 +292,51 @@ class LibreLinker {
     sortProjects() {
         const filteredProjects = this.getFilteredProjects();
         
+        // If ltcOnTop is null (off), don't separate LTC projects
+        if (this.ltcOnTop === null) {
+            // Apply sorting to all projects together
+            if (this.hasUserSorted && this.sortState.length > 0) {
+                const sortFn = (a, b) => {
+                    for (const { column, direction } of this.sortState) {
+                        let aVal = a[column];
+                        let bVal = b[column];
+
+                        // Special handling for license arrays
+                        if (column === 'license') {
+                            aVal = Array.isArray(aVal) ? aVal[0] : aVal;
+                            bVal = Array.isArray(bVal) ? bVal[0] : bVal;
+                        }
+
+                        // Normalize values
+                        const aIsString = typeof aVal === 'string';
+                        const bIsString = typeof bVal === 'string';
+                        if (aIsString) aVal = aVal.toLowerCase();
+                        if (bIsString) bVal = bVal.toLowerCase();
+
+                        let cmp = 0;
+                        if (aIsString && bIsString) {
+                            cmp = aVal.localeCompare(bVal);
+                        } else {
+                            if (aVal > bVal) cmp = 1;
+                            else if (aVal < bVal) cmp = -1;
+                            else cmp = 0;
+                        }
+
+                        if (cmp !== 0) {
+                            return direction === 'asc' ? cmp : -cmp;
+                        }
+                    }
+                    return 0;
+                };
+                return [...filteredProjects].sort(sortFn);
+            }
+            // No sorting, return as-is (randomized)
+            return filteredProjects;
+        }
+        
         // Separate LTC and non-LTC projects
-        let ltcProjects = filteredProjects.filter(p => p.ltcStarted === true);
-        let nonLtcProjects = filteredProjects.filter(p => p.ltcStarted !== true);
+        let ltcProjects = filteredProjects.filter(p => p.ltcSupported === true);
+        let nonLtcProjects = filteredProjects.filter(p => p.ltcSupported !== true);
         
         // Apply sorting to each group independently if user has sorted
         if (this.hasUserSorted && this.sortState.length > 0) {
@@ -305,7 +378,7 @@ class LibreLinker {
         }
         
         // Return with LTC on top or bottom based on ltcOnTop state
-        if (this.ltcOnTop) {
+        if (this.ltcOnTop === true) {
             return [...ltcProjects, ...nonLtcProjects];
         } else {
             return [...nonLtcProjects, ...ltcProjects];
@@ -657,7 +730,7 @@ class LibreLinker {
                     </span>
                 </td>
                 <td class="py-2 sm:py-3 px-2 sm:px-4 text-center">
-                    <span class="text-base sm:text-lg">${project.ltcStarted ? '✅' : '-'}</span>
+                    <span class="text-base sm:text-lg">${project.ltcSupported ? '✅' : '-'}</span>
                 </td>
             </tr>
         `).join('');
