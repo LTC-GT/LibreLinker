@@ -242,8 +242,8 @@
             {
         "name": "Zap Studio",
         "description": "Zap Studio is an open-source TypeScript monorepo that accelerates app development with ready-to-use packages and starters for fast, safe, and maintainable projects.",
-        "types": ["web", "ai"],
-        "technologies": ["Next.js", "React", "TypeScript", "Libraries", "TanStack Start", "Monorepo"],
+        "types": ["web"],
+        "technologies": ["Next.js", "React", "TypeScript", "Libraries", "Monorepo"],
         "license": "MIT",
         "yearStarted": 2025,
         "status": "Active",
