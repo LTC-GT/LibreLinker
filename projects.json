@@ -238,5 +238,17 @@
         "logo": null,
         "url": "https://github.com/optimalcharb/pdf-entity-labeling",
         "ltcSupported": true
+    },
+            {
+        "name": "Zap Studio",
+        "description": "Zap Studio is an open-source TypeScript monorepo that accelerates app development with ready-to-use packages and starters for fast, safe, and maintainable projects.",
+        "types": ["web", "ai"],
+        "technologies": ["Next.js", "React", "TypeScript", "Libraries", "TanStack Start", "Monorepo"],
+        "license": "MIT",
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": "misc/logos/ZS-logo.webp",
+        "url": "https://www.zapstudio.dev/",
+        "ltcSupported": true
     }
 ]
