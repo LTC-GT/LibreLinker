@@ -254,7 +254,7 @@
         {
         "name": "DAT Ecosystem",
         "description": "The dat-ecosystem supports a growing network of open source projects building tools for distributed data synchronization. These projects share a common foundation: the Dat Stack, a peer-to-peer technology suite designed to make data more accessible, transparent, and decentralized.",
-        "types": ["Multiple Applications", "Various Projects & Languages"],
+        "types": ["web", "research", "enterprise"],
         "technologies": ["Peer-to-Peer Networking", "Data Synchronization", "Decentralized Web"],
         "license": ["MIT", "BSD-3-Clause", "BSD-2-Clause", "AGPL-3.0", "GPL-3.0", "LGPL-3.0", "Apache-2.0"],
         "yearStarted": 2025,
