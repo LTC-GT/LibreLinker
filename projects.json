@@ -239,7 +239,7 @@
         "url": "https://github.com/optimalcharb/pdf-entity-labeling",
         "ltcSupported": true
     },
-            {
+        {
         "name": "Zap Studio",
         "description": "Zap Studio is an open-source TypeScript monorepo that accelerates app development with ready-to-use packages and starters for fast, safe, and maintainable projects.",
         "types": ["web"],
@@ -249,6 +249,126 @@
         "status": "Active",
         "logo": "misc/logos/ZS-logo.webp",
         "url": "https://www.zapstudio.dev/",
+        "ltcSupported": true
+    },
+        {
+        "name": "DAT Ecosystem",
+        "description": "The dat-ecosystem supports a growing network of open source projects building tools for distributed data synchronization. These projects share a common foundation: the Dat Stack, a peer-to-peer technology suite designed to make data more accessible, transparent, and decentralized.",
+        "types": ["Multiple Applications", "Various Projects & Languages"],
+        "technologies": ["Peer-to-Peer Networking", "Data Synchronization", "Decentralized Web"],
+        "license": ["MIT", "BSD-3-Clause", "BSD-2-Clause", "AGPL-3.0", "GPL-3.0", "LGPL-3.0", "Apache-2.0"],
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": "misc/logos/dat-logo.webp",
+        "url": "https://www.apereo.org/programs/software/dat-ecosystem",
+        "ltcSupported": true
+    },
+        {
+        "name": "Bedework",
+        "description": "The open-source enterprise system designed to elevate your calendaring experience. Whether you're managing public events, personal schedules, or group calendars, Bedework is your pathway to seamless, interoperable, and standards-compliant calendaring.",
+        "types": ["enterprise", "web"],
+        "technologies": ["Java", "CalDAV", "iCalendar", "RESTful APIs", "Portlet/Portal Integration", "LDAP/SSO"],
+        "license": "Apache-2.0",
+        "yearStarted": 2013,
+        "status": "Active",
+        "logo": "misc/logos/bedework-logo.webp",
+        "url": "https://www.apereo.org/programs/software/bedework",
+        "ltcSupported": true
+    },
+        {
+        "name": "HAX",
+        "description": "This dynamic collection of modular and interconnected open source educational tools is reshaping the way we approach Next-Generation Digital Learning Environments (NGDLE). At the heart of this transformative effort, a versatile rich text block editor that transcends platforms by leveraging the Web component web standard, providing educators with unparalleled content creation experience.",
+        "types": ["web", "academic"],
+        "technologies": ["Web Components", "HAXcms", "Open Educational Resources", "Rich Text Editing", "Accessibility (a11y)", "NGDLE Integration"],
+        "license": ["GPL-3.0","Apache-2.0"],
+        "yearStarted": 2014,
+        "status": "Active",
+        "logo": "misc/logos/hax-logo.webp",
+        "url": "https://www.apereo.org/programs/software/HAX",
+        "ltcSupported": true
+    },
+        {
+        "name": "Karuta",
+        "description": "A cutting-edge open-source software revolutionizing electronic portfolios for educational institutions. As the next generation in portfolio construction, Karuta offers unparalleled flexibility for universities, K-12, and professional organizations, empowering institutions to design learning, accreditation, or professional development portfolios.",
+        "types": ["academic", "enterprise", "web"],
+        "technologies": ["Portfolio Management", "Java", "Educational Technology", "Responsive Design", "Assessment Tools", "Workflow Engine"],
+        "license": "ECL-2.0",
+        "yearStarted": 2018,
+        "status": "Active",
+        "logo": "misc/logos/karuta-logo.webp",
+        "url": "https://www.apereo.org/programs/software/karuta",
+        "ltcSupported": true
+    },
+        {
+        "name": "OnTask",
+        "description": "A groundbreaking open source project that transforms the academic journey by delivering students timely, personalized, and actionable feedback. OnTask goes beyond traditional feedback methods, helping students feel seen and supported throughout their course participation.",
+        "types": ["academic", "web"],
+        "technologies": ["Learning Analytics", "Personalized Feedback", "LMS Integration", "Data Integration", "Educational Technology", "Python"],
+        "license": "MIT",
+        "yearStarted": 2025,
+        "status": "Active",
+        "logo": "misc/logos/ontask-logo.webp",
+        "url": "https://www.apereo.org/programs/software/task",
+        "ltcSupported": true
+    },
+        {
+        "name": "OpenCast",
+        "description": "A dynamic open source video management system designed to meet the evolving needs of academic institutions. Opencast empowers institutions to manage their ever-growing collection of video content efficiently – from capture and creation to processing, distribution, archival and life cycle management.",
+        "types": ["academic", "web"],
+        "technologies": ["Video Management", "Lecture Capture", "Video Processing", "Distribution", "Archival", "Java"],
+        "license": "ECL-2.0",
+        "yearStarted": 2017,
+        "status": "Active",
+        "logo": "misc/logos/opencast-logo.webp",
+        "url": "https://www.apereo.org/programs/software/opencast",
+        "ltcSupported": true
+    },
+        {
+        "name": "OpenEquella",
+        "description": "Discover openEQUELLA and unify your educational ecosystem! openEQUELA is a digital repository designed to be the heart of your educational technology stack. Developed by educators for educators, openEQUELLA provides a single, robust platform for housing teaching and learning materials, research content, media, and library resources. As an established open source solution, openEQUELLA serves as the 'single source of truth' for institutions seeking efficiency, interoperability, and powerful content management capabilities.",
+        "types": ["academic", "web"],
+        "technologies": ["Digital Repository", "Content Management", "LMS Integration", "LTI", "Java"],
+        "license": ["GPL-3.0", "Apache-2.0"],
+        "yearStarted": 2017,
+        "status": "Active",
+        "logo": "misc/logos/openequella-logo.webp",
+        "url": "https://www.apereo.org/programs/software/openequella",
+        "ltcSupported": true
+    },
+        {
+        "name": "UniTime",
+        "description": "Pronounced (yoo·nuh·time), a distributed system that redefines educational scheduling for universities, colleges, and higher education institutions. UniTime is not just a tool; it's a powerful and cost-effective solution designed to meet the diverse scheduling needs of educational institutions. With state-of-the-art algorithms, optimization techniques, and a user-friendly interface, UniTime transforms the timetabling and scheduling processes, offering flexibility, efficiency, and the ability to minimize student course conflicts.",
+        "types": ["academic", "web"],
+        "technologies": ["Educational Scheduling", "Timetabling", "Optimization Algorithms", "Java", "Distributed Systems", "Web-Based UI"],
+        "license": "Apache-2.0",
+        "yearStarted": 2015,
+        "status": "Active",
+        "logo": "misc/logos/unitime-logo.webp",
+        "url": "https://www.apereo.org/programs/software/unitime",
+        "ltcSupported": true
+    },
+        {
+        "name": "uPortal",
+        "description": "A leading open source enterprise portal framework designed by and for higher education institutions, K-12 schools, and research communities. As the gateway to a world of digital possibilities, providing a personalized and seamless experience for students, faculty, staff, and users.",
+        "types": ["academic", "web"],
+        "technologies": ["Enterprise Portal", "Personalization", "Single Sign-On", "Java", "Portlet API"],
+        "license": "Apache-2.0",
+        "yearStarted": 2011,
+        "status": "Active",
+        "logo": "misc/logos/uportal-logo.webp",
+        "url": "https://www.apereo.org/programs/software/uportal",
+        "ltcSupported": true
+    },
+        {
+        "name": "Xerte",
+        "description": "Pronounced (Zer-tee), a dynamic suite of browser-based tools designed to revolutionize how educators create interactive learning materials. Xerte is more than just an online e-learning authoring and delivery tool – it's a community-driven project, providing educators with a simple, accessible, and powerful solution for creating rich and interactive content.",
+        "types": ["academic", "web"],
+        "technologies": ["E-Learning Authoring", "Interactive Content", "Browser-Based Tools", "Community-Driven"],
+        "license": "Apache-2.0",
+        "yearStarted": 2013,
+        "status": "Active",
+        "logo": "misc/logos/hax-logo.webp",
+        "url": "https://www.apereo.org/programs/software/xerte",
         "ltcSupported": true
     }
 ]
