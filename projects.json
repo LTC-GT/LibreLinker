@@ -150,7 +150,7 @@
         "technologies": ["AI Education", "Textbook", "Python", "Neural Networks", "Mathematics"],
         "license": ["GPL-3.0", "GFDL-1.3"],
         "yearStarted": 2025,
-        "status": "Active",
+        "status": "Dormant",
         "logo": "misc/logos/AF-logo.webp",
         "url": "https://github.com/Fedele-AI/AI_Fundamentals",
         "ltcSupported": false
@@ -162,7 +162,7 @@
         "technologies": ["Machine Learning", "Web", "JavaScript", "Visualization", "Interactive"],
         "license": "GPL-3.0",
         "yearStarted": 2025,
-        "status": "Active",
+        "status": "Dormant",
         "logo": null,
         "url": "https://mlvisualizer.org",
         "ltcSupported": false
