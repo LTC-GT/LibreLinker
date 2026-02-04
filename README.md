@@ -23,12 +23,17 @@ LibreLinker is proudly built with 100% free software components!
 ## Local Development
 
 1. Clone the repository
-2. Open `index.html` in a web browser or use a local server:
+2. Install dependencies and start Vite:
    ```bash
-   # Using Python
-   python -m http.server 8000
+   # Using pnpm
+   pnpm install
+   pnpm run dev
+
+   # Using npm
+   npm install
+   npm run dev
    ```
-3. Navigate to `http://localhost:8000`
+3. Navigate to the URL shown in the terminal (default: `http://localhost:5173`)
 
 ## Adding a Project
 

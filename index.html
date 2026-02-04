@@ -28,7 +28,6 @@
     <meta name="author" content="LibreTech Collective">
     
     <!-- Preconnect to critical origins -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://scripts.simpleanalyticscdn.com" crossorigin>
     <link rel="dns-prefetch" href="https://queue.simpleanalyticscdn.com">
@@ -43,7 +42,6 @@
     <!-- 100% privacy-first analytics -->
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
     <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js" data-jslicense="1"></script>
-    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" width="1" height="1" referrerpolicy="no-referrer-when-downgrade"/></noscript>
     <!-- @license-end -->
     
     <!-- EmailJS for client-side email sending -->
@@ -51,25 +49,7 @@
     <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" data-jslicense="1"></script>
     <!-- @license-end -->
     
-    <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio" data-jslicense="1"></script>
-    <!-- @license-end -->
-    <script data-jslicense="1">
-        // @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later
-        // SPDX-License-Identifier: GPL-3.0-or-later
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'brand-gold': '#9C8547',
-                        'brand-navy': '#003057',
-                    }
-                }
-            }
-        }
-        // @license-end
-    </script>
+    <link rel="stylesheet" href="/src/styles.css">
     <style>
         @keyframes wiggle {
             0%, 100% { transform: rotate(0deg); }
@@ -137,6 +117,10 @@
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 transition-colors duration-200">
+    <!-- 100% privacy-first analytics (noscript fallback must be in body) -->
+    <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" width="1" height="1" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+    <!-- @license-end -->
     <!-- Main Application Script -->
     <!-- @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later -->
     <script defer src="app.js" data-jslicense="1"></script>
