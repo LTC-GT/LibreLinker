@@ -1,17 +1,16 @@
 import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1];
-const isUserOrOrgPage = repoName?.endsWith('.github.io');
-const base = process.env.GITHUB_PAGES === 'true' && repoName && !isUserOrOrgPage
-  ? `/${repoName}/`
-  : '/';
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+// Relative base avoids broken assets on project pages and custom domains.
+const base = isGitHubPages ? './' : '/';
 
 export default defineConfig({
   base,
   plugins: [
     viteStaticCopy({
       targets: [
+        { src: 'CNAME', dest: '' },
         { src: 'projects.json', dest: '' },
         { src: 'robots.txt', dest: '' },
         { src: 'sitemap.xml', dest: '' },

@@ -1,12 +1,7 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: (Disabled) Deploy raw static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -24,6 +19,7 @@ concurrency:
 jobs:
   # Single deploy job since we're just deploying
   deploy:
+    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

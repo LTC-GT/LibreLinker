@@ -37,7 +37,7 @@
     <link rel="preload" href="projects.json" as="fetch" crossorigin>
     
     <!-- LibreJS License Information -->
-    <link rel="jslicense" type="text/html" href="/javascript-licenses.html">
+    <link rel="jslicense" type="text/html" href="javascript-licenses.html">
     
     <!-- 100% privacy-first analytics -->
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
@@ -49,7 +49,7 @@
     <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" data-jslicense="1"></script>
     <!-- @license-end -->
     
-    <link rel="stylesheet" href="/src/styles.css">
+    <!-- Tailwind CSS is bundled by Vite via app.js import -->
     <style>
         @keyframes wiggle {
             0%, 100% { transform: rotate(0deg); }
@@ -121,9 +121,9 @@
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
     <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" width="1" height="1" referrerpolicy="no-referrer-when-downgrade"/></noscript>
     <!-- @license-end -->
-    <!-- Main Application Script -->
+    <!-- Main Application Script (Vite entry) -->
     <!-- @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later -->
-    <script defer src="app.js" data-jslicense="1"></script>
+    <script type="module" src="/app.js" data-jslicense="1"></script>
     <!-- @license-end -->
 
     <!-- Header -->
