@@ -15,7 +15,7 @@ LibreLinker is proudly built with 100% free software components!
 
 ## Technology Stack
 
-- **Frontend**: Vanilla JavaScript with Tailwind CSS - MIT License
+- **Frontend**: TailwindCSS for styling - MIT License
 - **Email**: EmailJS for client-side email delivery - BSD-3-Clause License
 - **Analytics**: Simple Analytics (privacy-first, GDPR compliant) - MIT License
 - **Bot Protection**: Custom CAPTCHA solution - GPLv3 License (this project)
@@ -45,7 +45,7 @@ To add your project to LibreLinker:
 4. Provide project details in the message
 
 Your project must:
-- Be free software with a GPL-compatible license
+- Be free software with a [GPL-compatible license](https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses)
 - Have a Georgia Tech affiliation (contributor, researcher, or student)
 - Be actively maintained or of significance (TBD by the LibreTech Collective)
 
@@ -64,14 +64,9 @@ librelinker/
 │   └── logos/              # Project logos
 ```
 
-## Contributing
-
-We welcome contributions! Please ensure:
-- Projects follow free software principles
-- Code maintains existing style and structure
-- All submissions include proper attribution
-
 ## License
+
+All persons who contribute to this project are listed in the [AUTHORS.md](AUTHORS.md) file.
 
 This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later).
 
@@ -79,8 +74,10 @@ See the [LICENSE](LICENSE.md) file for details.
 
 ## Contact
 
+This project is open to pull requests and contributions. For inquiries or to submit your project, please contact us:
+
 - **Organization**: [LibreTech Collective @ Georgia Tech](https://ltc.gtorg.gatech.edu/)
-- **Email**: librelinker@gtltc.org
+- **Email**: gtltc@protonmail.com
 
 ---
 
