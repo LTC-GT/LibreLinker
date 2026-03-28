@@ -142,7 +142,7 @@ class LibreLinker {
         const filterButtons = document.querySelectorAll('[data-filter-type]');
         filterButtons.forEach(button => {
             // Check if button is already active on page load (has active styling)
-            if (button.classList.contains('bg-brand-gold') && button.classList.contains('text-white')) {
+            if (button.classList.contains('bg-brand-gold')) {
                 const type = button.getAttribute('data-filter-type');
                 this.activeFilters.add(type);
             }
@@ -151,12 +151,12 @@ class LibreLinker {
                 const type = button.getAttribute('data-filter-type');
                 if (this.activeFilters.has(type)) {
                     this.activeFilters.delete(type);
-                    button.classList.remove('bg-brand-gold', 'text-white');
-                    button.classList.add('bg-gray-100', 'text-gray-700');
+                    button.classList.remove('bg-brand-gold', 'text-brand-navy');
+                    button.classList.add('bg-gray-100', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
                 } else {
                     this.activeFilters.add(type);
-                    button.classList.remove('bg-gray-100', 'text-gray-700');
-                    button.classList.add('bg-brand-gold', 'text-white');
+                    button.classList.remove('bg-gray-100', 'text-gray-700', 'dark:bg-gray-700', 'dark:text-gray-200', 'dark:hover:bg-gray-600');
+                    button.classList.add('bg-brand-gold', 'text-brand-navy');
                     // Turn off LTC Supported filter when any other filter is applied
                     this.ltcOnTop = null;
                 }
@@ -389,8 +389,8 @@ class LibreLinker {
 
     getProjectIcon(type) {
         const icons = {
-            'ai': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            'ai': `<svg class="w-6 h-6 fill-current" viewBox="0 0 22 38" aria-hidden="true">
+                <use href="#icon-bender-head"></use>
             </svg>`,
             'academic': `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M12 14l9-5-9-5-9 5 9 5z"/>
