@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found - LibreLinker</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .sad-face {
+            font-size: 200px;
+            margin: 20px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        h1 {
+            color: #003057;
+            font-size: 48px;
+            margin: 20px 0;
+        }
+        p {
+            color: #666;
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        .links {
+            margin: 30px 0;
+        }
+        a {
+            color: #B3A369;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 0 15px;
+            padding: 10px 20px;
+            border: 2px solid #B3A369;
+            border-radius: 4px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            background-color: #B3A369;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="sad-face">😢</div>
+    <h1>404</h1>
+    <p>Oops! The page you're looking for doesn't exist.</p>
+    <p>But don't worry, you can always find what you need here:</p>
+    <div class="links">
+        <a href="/">Home</a>
+        <a href="/#projects">Projects</a>
+    </div>
+</body>
+</html>
