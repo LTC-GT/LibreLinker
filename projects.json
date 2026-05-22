@@ -19,7 +19,7 @@
         "license": "MIT",
         "yearStarted": 2019,
         "status": "Active",
-        "logo": "misc/logos/MFC-logo.webp",
+        "logo": "misc/logos/MFC-logo.avif",
         "url": "https://mflowcode.github.io",
         "ltcSupported": false
     },
@@ -31,7 +31,7 @@
         "license": "BSD-3-Clause",
         "yearStarted": 2024,
         "status": "Active",
-        "logo": "misc/logos/QCMB-logo.webp",
+        "logo": "misc/logos/QCMB-logo.avif",
         "url": "https://github.com/MolSSI/QCManyBody",
         "ltcSupported": false
     },
@@ -43,7 +43,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2020,
         "status": "Active",
-        "logo": "misc/logos/vortex-logo.webp",
+        "logo": "misc/logos/vortex-logo.avif",
         "url": "https://vortex.cc.gatech.edu/",
         "ltcSupported": false
     },
@@ -67,7 +67,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2014,
         "status": "Active",
-        "logo": "misc/logos/airavata-logo.webp",
+        "logo": "misc/logos/airavata-logo.avif",
         "url": "https://airavata.apache.org/",
         "ltcSupported": false
     },
@@ -91,7 +91,7 @@
         "license": "AGPL-3.0",
         "yearStarted": 2024,
         "status": "Active",
-        "logo": "misc/logos/hlsfactory-logo.webp",
+        "logo": "misc/logos/hlsfactory-logo.avif",
         "url": "https://sharc-lab.github.io/HLSFactory/docs/",
         "ltcSupported": false
     },
@@ -103,7 +103,7 @@
         "license": "AGPL-3.0",
         "yearStarted": 2023,
         "status": "Active",
-        "logo": "misc/logos/lightningsim-logo.webp",
+        "logo": "misc/logos/lightningsim-logo.avif",
         "url": "https://github.com/sharc-lab/LightningSim",
         "ltcSupported": false
     },
@@ -127,7 +127,7 @@
         "license": "MIT",
         "yearStarted": 2024,
         "status": "Active",
-        "logo": null,
+        "logo": "misc/logos/qwerty-logo.avif",
         "url": "https://github.com/gt-tinker/qwerty",
         "ltcSupported": true
     },
@@ -151,7 +151,7 @@
         "license": ["GPL-3.0", "GFDL-1.3"],
         "yearStarted": 2025,
         "status": "Active",
-        "logo": "misc/logos/AF-logo.webp",
+        "logo": "misc/logos/AF-logo.avif",
         "url": "https://github.com/Fedele-AI/AI_Fundamentals",
         "ltcSupported": false
     },
@@ -163,7 +163,7 @@
         "license": "GPL-3.0",
         "yearStarted": 2025,
         "status": "Dormant",
-        "logo": "misc/logos/mlviz_logo.webp",
+        "logo": "misc/logos/mlviz_logo.avif",
         "url": "https://mlvisualizer.org",
         "ltcSupported": false
     },
@@ -175,7 +175,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2024,
         "status": "Active",
-        "logo": "misc/logos/TG-logo.webp",
+        "logo": "misc/logos/TG-logo.avif",
         "url": "https://trustgraph.ai/",
         "ltcSupported": true
     },
@@ -187,7 +187,7 @@
         "license": "ECL-2.0",
         "yearStarted": 2004,
         "status": "Active",
-        "logo": "misc/logos/sakai-logo.webp",
+        "logo": "misc/logos/sakai-logo.avif",
         "url": "https://www.apereo.org/programs/software/sakai-lms",
         "ltcSupported": true
     },
@@ -199,7 +199,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2004,
         "status": "Active",
-        "logo": "misc/logos/cas-logo.webp",
+        "logo": "misc/logos/cas-logo.avif",
         "url": "https://www.apereo.org/programs/software/cas",
         "ltcSupported": true
     },
@@ -247,7 +247,7 @@
         "license": "MIT",
         "yearStarted": 2025,
         "status": "Active",
-        "logo": "misc/logos/ZS-logo.webp",
+        "logo": "misc/logos/ZS-logo.avif",
         "url": "https://www.zapstudio.dev/",
         "ltcSupported": true
     },
@@ -259,7 +259,7 @@
         "license": ["MIT", "BSD-3-Clause", "BSD-2-Clause", "AGPL-3.0", "GPL-3.0", "LGPL-3.0", "Apache-2.0"],
         "yearStarted": 2025,
         "status": "Active",
-        "logo": "misc/logos/dat-logo.webp",
+        "logo": "misc/logos/dat-logo.avif",
         "url": "https://www.apereo.org/programs/software/dat-ecosystem",
         "ltcSupported": true
     },
@@ -271,7 +271,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2013,
         "status": "Active",
-        "logo": "misc/logos/bedework-logo.webp",
+        "logo": "misc/logos/bedework-logo.avif",
         "url": "https://www.apereo.org/programs/software/bedework",
         "ltcSupported": true
     },
@@ -283,7 +283,7 @@
         "license": ["GPL-3.0","Apache-2.0"],
         "yearStarted": 2014,
         "status": "Active",
-        "logo": "misc/logos/hax-logo.webp",
+        "logo": "misc/logos/hax-logo.avif",
         "url": "https://www.apereo.org/programs/software/HAX",
         "ltcSupported": true
     },
@@ -295,7 +295,7 @@
         "license": "ECL-2.0",
         "yearStarted": 2018,
         "status": "Active",
-        "logo": "misc/logos/karuta-logo.webp",
+        "logo": "misc/logos/karuta-logo.avif",
         "url": "https://www.apereo.org/programs/software/karuta",
         "ltcSupported": true
     },
@@ -307,7 +307,7 @@
         "license": "MIT",
         "yearStarted": 2025,
         "status": "Active",
-        "logo": "misc/logos/ontask-logo.webp",
+        "logo": "misc/logos/ontask-logo.avif",
         "url": "https://www.apereo.org/programs/software/task",
         "ltcSupported": true
     },
@@ -319,7 +319,7 @@
         "license": "ECL-2.0",
         "yearStarted": 2017,
         "status": "Active",
-        "logo": "misc/logos/opencast-logo.webp",
+        "logo": "misc/logos/opencast-logo.avif",
         "url": "https://www.apereo.org/programs/software/opencast",
         "ltcSupported": true
     },
@@ -331,7 +331,7 @@
         "license": ["GPL-3.0", "Apache-2.0"],
         "yearStarted": 2017,
         "status": "Active",
-        "logo": "misc/logos/openequella-logo.webp",
+        "logo": "misc/logos/openequella-logo.avif",
         "url": "https://www.apereo.org/programs/software/openequella",
         "ltcSupported": true
     },
@@ -343,7 +343,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2015,
         "status": "Active",
-        "logo": "misc/logos/unitime-logo.webp",
+        "logo": "misc/logos/unitime-logo.avif",
         "url": "https://www.apereo.org/programs/software/unitime",
         "ltcSupported": true
     },
@@ -355,7 +355,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2011,
         "status": "Active",
-        "logo": "misc/logos/uportal-logo.webp",
+        "logo": "misc/logos/uportal-logo.avif",
         "url": "https://www.apereo.org/programs/software/uportal",
         "ltcSupported": true
     },
@@ -367,7 +367,7 @@
         "license": "Apache-2.0",
         "yearStarted": 2013,
         "status": "Active",
-        "logo": "misc/logos/xerte-logo.webp",
+        "logo": "misc/logos/xerte-logo.avif",
         "url": "https://www.apereo.org/programs/software/xerte",
         "ltcSupported": true
     }
