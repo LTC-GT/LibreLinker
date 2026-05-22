@@ -129,7 +129,7 @@
         "status": "Active",
         "logo": null,
         "url": "https://github.com/gt-tinker/qwerty",
-        "ltcSupported": false
+        "ltcSupported": true
     },
     {
         "name": "GTSAM",
