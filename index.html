@@ -3,29 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>LibreLinker - Get Coding Today!</title>
+    <title>LibreLinker | Free, Libre, &amp; Open-Source Projects — Georgia Tech</title>
     
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐝</text></svg>">
     
-    <!-- Open Graph / Facebook -->
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://librelinker.org/">
+
+    <!-- Theme color for browser chrome -->
+    <meta name="theme-color" content="#003057" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111827" media="(prefers-color-scheme: dark)">
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://librelinker.org/">
-    <meta property="og:title" content="LibreLinker - Get Coding Today!">
-    <meta property="og:description" content="A curated collection of innovative free & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow, Fighting for Freedom.">
-    <meta property="og:image" content="misc/img/GTLTC_LOGO_SOLO.avif">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://librelinker.org/">
-    <meta property="twitter:title" content="LibreLinker - Get Coding Today!">
-    <meta property="twitter:description" content="A curated collection of innovative free & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow, Fighting for Freedom.">
-    <meta property="twitter:image" content="misc/img/GTLTC_LOGO_SOLO.avif">
-    
-    <!-- Additional Meta Tags -->
-    <meta name="description" content="A curated collection of innovative free & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow, Fighting for Freedom.">
-    <meta name="keywords" content="free & open-source, Georgia Tech, AI, research, hardware, projects, portfolio">
+    <meta property="og:site_name" content="LibreLinker">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="LibreLinker — Free, Libre, & Open-Source Projects from Georgia Tech">
+    <meta property="og:description" content="A curated collection of innovative free, libre, & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow, Fighting for Freedom.">
+    <meta property="og:image" content="https://librelinker.org/misc/img/GTLTC_LOGO_SOLO.avif">
+    <meta property="og:image:type" content="image/avif">
+    <meta property="og:image:width" content="649">
+    <meta property="og:image:height" content="912">
+    <meta property="og:image:alt" content="LibreTech Collective — Georgia Tech's free software club">
+
+    <!-- Twitter / X Card (name= not property= per spec) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://librelinker.org/">
+    <meta name="twitter:title" content="LibreLinker — Free, Libre, & Open-Source Projects from Georgia Tech">
+    <meta name="twitter:description" content="A curated collection of innovative free, libre, & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow, Fighting for Freedom.">
+    <meta name="twitter:image" content="https://librelinker.org/misc/img/GTLTC_LOGO_SOLO.avif">
+    <meta name="twitter:image:alt" content="LibreTech Collective — Georgia Tech's free software club">
+
+    <!-- SEO Meta -->
+    <meta name="description" content="A curated collection of innovative free, libre, & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond. Connecting Ideas, Building Tomorrow, Fighting for Freedom.">
+    <meta name="keywords" content="free software, open source, FOSS, libre, Georgia Tech, LibreTech Collective, AI projects, research software, hardware projects, student projects, GPL, open-source directory">
     <meta name="author" content="LibreTech Collective">
+    <meta name="robots" content="index, follow">
     
     <!-- Preconnect to critical origins -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -49,7 +64,46 @@
     <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" data-jslicense="1"></script>
     <!-- @license-end -->
     
-    <!-- Tailwind CSS is bundled by Vite via app.js import -->
+    <!-- JSON-LD structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://librelinker.org/#website",
+          "url": "https://librelinker.org/",
+          "name": "LibreLinker",
+          "description": "A curated collection of innovative free, libre, & open-source projects from Georgia Tech spanning AI, research, hardware, and beyond.",
+          "inLanguage": "en-US",
+          "publisher": { "@id": "https://librelinker.org/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://librelinker.org/#organization",
+          "name": "LibreTech Collective",
+          "url": "https://ltc.gtorg.gatech.edu/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://librelinker.org/misc/img/GTLTC_LOGO_SOLO.avif",
+            "width": 649,
+            "height": 912
+          },
+          "sameAs": [
+            "https://github.com/LTC-GT",
+            "https://www.linkedin.com/company/gtltc",
+            "https://www.instagram.com/libretechcollectivegt/",
+            "https://mastodon.social/@libretechcollectivegt",
+            "https://bsky.app/profile/libretechgatech.bsky.social",
+            "https://www.reddit.com/u/gtltc"
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <!-- Tailwind CSS processed by Lume -->
+    <link rel="stylesheet" href="/src/styles.css">
     <style>
         @keyframes wiggle {
             0%, 100% { transform: rotate(0deg); }
@@ -102,15 +156,8 @@
             margin-right: auto;
         }
         
-        /* Reduce layout shift */
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        
         /* Optimize animations */
         .transition-colors,
-        .hover\\:bg-opacity-90,
         .hover\\:text-brand-gold {
             will-change: auto;
         }
@@ -125,9 +172,9 @@
 
     <!-- 100% privacy-first analytics (noscript fallback must be in body) -->
     <!-- @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&dn=expat.txt Expat -->
-    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" width="1" height="1" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="Analytics" width="1" height="1" referrerpolicy="no-referrer-when-downgrade"/></noscript>
     <!-- @license-end -->
-    <!-- Main Application Script (Vite entry) -->
+    <!-- Main Application Script -->
     <!-- @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&dn=gpl-3.0.txt GPL-3.0-or-later -->
     <script type="module" src="/app.js" data-jslicense="1"></script>
     <!-- @license-end -->
@@ -144,15 +191,15 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <button id="info-toggle" 
-                            class="p-2 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors sm:hidden"
+                    <button id="info-toggle"
+                            class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors sm:hidden"
                             aria-label="Show info">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                         </svg>
                     </button>
                     <button id="theme-toggle" 
-                            class="p-2 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 transition-colors"
+                            class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
                             aria-label="Toggle dark mode">
                         <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
@@ -164,7 +211,7 @@
                     <a href="https://ltc.gtorg.gatech.edu/" 
                        target="_blank" 
                        rel="noopener noreferrer"
-                       class="px-3 sm:px-4 py-1.5 sm:py-2 bg-brand-gold text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-opacity-90 transition-colors whitespace-nowrap">
+                       class="px-3 sm:px-4 py-1.5 sm:py-2 bg-brand-gold text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-brand-gold/90 transition-colors whitespace-nowrap">
                         <span class="hidden sm:inline">LibreTech Collective Homepage</span>
                         <span class="sm:hidden">LTC Homepage</span>
                     </a>
@@ -256,22 +303,22 @@
                 <table class="w-full sm:min-w-[640px]">
                     <thead class="bg-brand-navy dark:bg-gray-900 text-white sticky top-0 z-10">
                         <tr>
-                            <th data-sort="name" class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-48 sm:w-64 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                            <th data-sort="name" class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-48 sm:w-64 cursor-pointer hover:bg-brand-navy/80 transition-colors select-none">
                                 Project <span class="sort-icon opacity-30" aria-hidden="true"><svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3zm0 14l-3-3h6l-3 3z"/></svg></span>
                             </th>
                             <th class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm">Description</th>
                             <th class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-20 sm:w-24">Type</th>
                             <th class="py-2 sm:py-3 px-2 sm:px-4 text-left font-semibold text-xs sm:text-sm w-40 sm:w-56">Technologies</th>
-                            <th data-sort="yearStarted" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-16 sm:w-24 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                            <th data-sort="yearStarted" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-16 sm:w-24 cursor-pointer hover:bg-brand-navy/80 transition-colors select-none">
                                 Year <span class="sort-icon opacity-30" aria-hidden="true"><svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3zm0 14l-3-3h6l-3 3z"/></svg></span>
                             </th>
-                            <th data-sort="license" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-24 sm:w-32 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                            <th data-sort="license" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-24 sm:w-32 cursor-pointer hover:bg-brand-navy/80 transition-colors select-none">
                                 License <span class="sort-icon opacity-30" aria-hidden="true"><svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3zm0 14l-3-3h6l-3 3z"/></svg></span>
                             </th>
-                            <th data-sort="status" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-28 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                            <th data-sort="status" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-28 cursor-pointer hover:bg-brand-navy/80 transition-colors select-none">
                                 Status <span class="sort-icon opacity-30" aria-hidden="true"><svg class="inline w-3 h-3 align-middle" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l3 3H5l3-3zm0 14l-3-3h6l-3 3z"/></svg></span>
                             </th>
-                            <th data-sort="ltcSupported" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-24 cursor-pointer hover:bg-opacity-80 transition-colors select-none">
+                            <th data-sort="ltcSupported" class="py-2 sm:py-3 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm w-20 sm:w-24 cursor-pointer hover:bg-brand-navy/80 transition-colors select-none">
                                 <div class="flex items-center justify-center gap-1">
                                     <span>LTC Supported?</span>
                                     <div class="inline-block">
@@ -354,7 +401,7 @@
                                     Anyone can apply for submission to the list. The two qualifications are that the project must have some sort of tie to Georgia Tech and have a GPL compatible license.
                                 </p>
                                 <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
-                                    Being on this list means your project is recognized by the LibreTech Collective as upholding software freedom principles and connects you with the Georgia Tech free & open-source community.
+                                    Being on this list means your project is recognized by the LibreTech Collective as upholding software freedom principles and connects you with the Georgia Tech free, libre, & open-source community.
                                 </p>
                             </div>
                         </div>

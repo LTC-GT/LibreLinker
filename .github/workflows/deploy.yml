@@ -21,34 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
         with:
-          node-version: 20
+          deno-version: v2.x
 
-      - name: Enable pnpm (corepack)
-        run: |
-          corepack enable
-          corepack prepare pnpm@9 --activate
-
-      - name: Get pnpm store path
-        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Cache pnpm store
+      - name: Cache Deno modules
         uses: actions/cache@v4
         with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          path: ~/.deno
+          key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.lock') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+            ${{ runner.os }}-deno-
 
       - name: Build
-        env:
-          GITHUB_PAGES: "true"
-        run: pnpm run build
+        run: deno task build
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

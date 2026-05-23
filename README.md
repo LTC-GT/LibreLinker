@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-LibreLinker showcases free and open-source projects developed by the Georgia Tech community. Our mission is to connect ideas and build tomorrow by highlighting projects that respect user freedom and follow GPL-compatible licenses.
+LibreLinker showcases free, libre, & open-source projects developed by the Georgia Tech community. Our mission is to connect ideas and build tomorrow by highlighting projects that respect user freedom and follow GPL-compatible licenses.
 
 LibreLinker is proudly built with 100% free software components!
 
@@ -15,25 +15,27 @@ LibreLinker is proudly built with 100% free software components!
 
 ## Technology Stack
 
-- **Frontend**: TailwindCSS for styling - MIT License
-- **Email**: EmailJS for client-side email delivery - BSD-3-Clause License
-- **Analytics**: Simple Analytics (privacy-first, GDPR compliant) - MIT License
-- **Bot Protection**: Custom CAPTCHA solution - GPLv3 License (this project)
+- **Build**: [Lume](https://lume.land/) static site generator for Deno — GPL-3.0-or-later
+- **Styling**: Tailwind CSS v4 — MIT License
+- **Email**: EmailJS for client-side email delivery — Expat (MIT) License
+- **Analytics**: Simple Analytics (privacy-first, GDPR compliant) — MIT License
+- **Bot Protection**: Custom CAPTCHA solution — GPL-3.0-or-later (this project)
 
 ## Local Development
 
-1. Clone the repository
-2. Install dependencies and start Vite:
+1. Install [Deno](https://deno.land/) v2.x
+2. Clone the repository
+3. Start the dev server with live reload:
    ```bash
-   # Using pnpm
-   pnpm install
-   pnpm run dev
-
-   # Using npm
-   npm install
-   npm run dev
+   deno task dev
    ```
-3. Navigate to the URL shown in the terminal (default: `http://localhost:5173`)
+4. Navigate to `http://localhost:3000`
+
+To build for production:
+```bash
+deno task build
+# Output written to dist/
+```
 
 ## Adding a Project
 
@@ -53,15 +55,23 @@ Your project must:
 
 ```
 librelinker/
-├── app.js                  # Main application logic
-├── index.html              # Main application file
-├── LICENSE.md              # Project license
+├── _config.ts              # Lume build configuration
+├── deno.json               # Deno tasks and import map
+├── app.js                  # Main application logic (GPL-3.0-or-later)
+├── index.html              # Main page
+├── 404.html                # Error page
+├── javascript-licenses.html # LibreJS machine-readable license table
 ├── projects.json           # Project data
-├── README.md               # This file
+├── robots.txt              # Search engine crawl rules
 ├── sitemap.xml             # Sitemap for SEO
+├── CNAME                   # GitHub Pages custom domain
+├── src/
+│   └── styles.css          # Tailwind v4 entry point
 ├── misc/
 │   ├── img/                # Images and assets
 │   └── logos/              # Project logos
+└── .github/workflows/
+    └── deploy.yml          # GitHub Pages deployment via Deno
 ```
 
 ## License

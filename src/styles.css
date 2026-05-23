@@ -1,3 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Scan all template files for Tailwind classes */
+@source "../app.js";
+@source "../index.html";
+@source "../404.html";
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+/* Class-based dark mode (toggled via .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-gold: #9C8547;
+  --color-brand-navy: #003057;
+}

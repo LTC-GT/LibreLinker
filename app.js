@@ -16,9 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import './src/styles.css';
-
-
 // Initialize theme before page renders to prevent flash
 (function() {
     const savedTheme = localStorage.getItem('theme');
@@ -537,7 +534,7 @@ class LibreLinker {
         // Create overlay
         const overlay = document.createElement('div');
         overlay.id = 'description-overlay';
-        overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+        overlay.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4';
         overlay.onclick = (e) => {
             if (e.target === overlay) {
                 this.closeDescriptionPopup();
@@ -586,7 +583,7 @@ class LibreLinker {
         // Create overlay
         const overlay = document.createElement('div');
         overlay.id = 'description-overlay';
-        overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+        overlay.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4';
         overlay.onclick = (e) => {
             if (e.target === overlay) {
                 this.closeDescriptionPopup();
@@ -611,7 +608,7 @@ class LibreLinker {
             <div class="p-4 sm:p-6">
                 <div class="flex flex-wrap gap-2">
                     ${technologies.map(tech => `
-                        <span class="px-3 py-1.5 bg-brand-gold bg-opacity-10 dark:bg-opacity-20 text-brand-navy dark:text-brand-gold text-sm font-medium rounded-full border border-brand-gold border-opacity-20">
+                        <span class="px-3 py-1.5 bg-brand-gold/10 dark:bg-brand-gold/20 text-brand-navy dark:text-brand-gold text-sm font-medium rounded-full border border-brand-gold/20">
                             ${tech}
                         </span>
                     `).join('')}
@@ -654,7 +651,7 @@ class LibreLinker {
             return;
         }
         tbody.innerHTML = sorted.map(project => `
-            <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-brand-gold hover:bg-opacity-5 dark:hover:bg-opacity-10 transition-colors">
+            <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-brand-gold/5 dark:hover:bg-brand-gold/10 transition-colors">
                 <td class="py-2 sm:py-3 px-2 sm:px-4">
                     <div class="flex items-center gap-2 sm:gap-3">
                         <a href="${project.url}" target="_blank" rel="noopener noreferrer" class="flex-shrink-0" aria-label="Open ${project.name}">
@@ -694,7 +691,7 @@ class LibreLinker {
                     <div class="flex flex-wrap gap-1 sm:gap-1.5 cursor-pointer" 
                          onclick="window.libreLinker.showTechnologiesPopup('${project.name}', ${JSON.stringify(project.technologies).replace(/"/g, '&quot;')})">
                         ${project.technologies.slice(0, 2).map(tech => `
-                            <span class="px-2 py-0.5 bg-brand-gold bg-opacity-10 dark:bg-opacity-20 text-brand-navy dark:text-brand-gold text-[10px] sm:text-xs font-medium rounded-full border border-brand-gold border-opacity-20 whitespace-nowrap">
+                            <span class="px-2 py-0.5 bg-brand-gold/10 dark:bg-brand-gold/20 text-brand-navy dark:text-brand-gold text-[10px] sm:text-xs font-medium rounded-full border border-brand-gold/20 whitespace-nowrap">
                                 ${tech}
                             </span>
                         `).join('')}
@@ -821,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (infoToggle) {
         infoToggle.addEventListener('click', () => {
             const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center z-50';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50';
             modal.innerHTML = `
             <div class="bg-white dark:bg-gray-800 rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg max-h-[80vh] overflow-y-auto">
                 <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
@@ -840,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         All projects <a href="https://www.gnu.org/philosophy/free-sw.en.html" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline">respect your freedom</a> and are GPL-compatible. Most all are led by Georgia Tech students, faculty, and alumni.
                     </p>
                     <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                        <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline font-medium">LibreTech Collective</a>, Georgia Tech's only Free & Open-Source club, invites you to explore, contribute, and make an impact!
+                        <a href="https://ltc.gtorg.gatech.edu/" target="_blank" rel="noopener noreferrer" class="text-brand-gold hover:underline font-medium">LibreTech Collective</a>, Georgia Tech's only Free, Libre, & Open-Source club, invites you to explore, contribute, and make an impact!
                     </p>
                     <p class="text-[11px] text-gray-600 dark:text-gray-400 mb-4 text-center flex items-center justify-center gap-1 leading-none">
                         <span>Built with ❤️ in Atlanta, Georgia</span>
@@ -1537,7 +1534,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Checkbox (if visible) AND bot prevention must be passed
         if (checkboxValid && botPreventionPassed) {
             submitBtn.disabled = false;
-            submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
+            submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-brand-gold/90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
         } else {
             submitBtn.disabled = true;
             submitBtn.className = 'w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-medium transition-colors cursor-not-allowed';
@@ -1630,7 +1627,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = originalBtnText;
-                    submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-opacity-90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
+                    submitBtn.className = 'w-full bg-brand-gold text-white py-3 px-6 rounded-lg font-medium hover:bg-brand-gold/90 transition-colors focus:ring-2 focus:ring-brand-gold focus:ring-offset-2 cursor-pointer';
                     
                     // Hide error message after 7 seconds
                     setTimeout(() => {
