@@ -1,3 +1,9 @@
+# MOVED TO CODEBERG
+
+And you should too! Visit us now here at https://codeberg.org/LTC-GT/LibreLinker
+
+---
+
 # 🐝 LibreLinker
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
